@@ -7,64 +7,73 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <p class="note">Static or quasi-static holds commonly used in gymnastics, calisthenics, strong‑man, and rehab work. Select 4–6 moves per session, hold 30–45&nbsp;s × 3–5 sets at ~70–85&nbsp;% MVC, and rest 48–72&nbsp;h before repeating the same tissue group.</p>
-  
-  <div class="filter-section">
-    <div class="filter-controls">
-      <button id="clear-filters" class="clear-btn">Clear Filters</button>
-      <span class="exercise-count" id="exercise-count">30 exercises shown</span>
+  <header class="page-header">
+    <div class="header-container">
+      <img src="pop.png" alt="Training Reference" class="header-image">
+      <div class="content-area">
+        <p class="note">Static or quasi-static holds commonly used in gymnastics, calisthenics, strong‑man, and rehab work. Select 4–6 moves per session, hold 30–45&nbsp;s × 3–5 sets at ~70–85&nbsp;% MVC, and rest 48–72&nbsp;h before repeating the same tissue group.</p>
+        
+        <div class="filter-section">
+          <div class="filter-controls">
+            <button id="clear-filters" class="clear-btn">Clear Filters</button>
+            <span class="exercise-count" id="exercise-count">30 exercises shown</span>
+          </div>
+          <div class="legend">
+            <div class="legend-item filter-btn" data-group="upper-static">
+              <div class="legend-color" style="background-color:#3182ce;"></div>
+              <span>Upper Body Static</span>
+            </div>
+            <div class="legend-item filter-btn" data-group="core">
+              <div class="legend-color" style="background-color:#38a169;"></div>
+              <span>Core/Abdominal</span>
+            </div>
+            <div class="legend-item filter-btn" data-group="grip">
+              <div class="legend-color" style="background-color:#ed8936;"></div>
+              <span>Grip/Hang</span>
+            </div>
+            <div class="legend-item filter-btn" data-group="support">
+              <div class="legend-color" style="background-color:#805ad5;"></div>
+              <span>Support Positions</span>
+            </div>
+            <div class="legend-item filter-btn" data-group="carry">
+              <div class="legend-color" style="background-color:#319795;"></div>
+              <span>Carries/Loading</span>
+            </div>
+            <div class="legend-item filter-btn" data-group="lower">
+              <div class="legend-color" style="background-color:#e53e3e;"></div>
+              <span>Lower Body</span>
+            </div>
+            <div class="legend-item filter-btn" data-group="neck">
+              <div class="legend-color" style="background-color:#d69e2e;"></div>
+              <span>Neck/Cervical</span>
+            </div>
+            <div class="legend-item filter-btn" data-group="postural">
+              <div class="legend-color" style="background-color:#4c51bf;"></div>
+              <span>Postural</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="legend">
-      <div class="legend-item filter-btn" data-group="upper-static">
-        <div class="legend-color" style="background-color:#3182ce;"></div>
-        <span>Upper Body Static</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="core">
-        <div class="legend-color" style="background-color:#38a169;"></div>
-        <span>Core/Abdominal</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="grip">
-        <div class="legend-color" style="background-color:#ed8936;"></div>
-        <span>Grip/Hang</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="support">
-        <div class="legend-color" style="background-color:#805ad5;"></div>
-        <span>Support Positions</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="carry">
-        <div class="legend-color" style="background-color:#319795;"></div>
-        <span>Carries/Loading</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="lower">
-        <div class="legend-color" style="background-color:#e53e3e;"></div>
-        <span>Lower Body</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="neck">
-        <div class="legend-color" style="background-color:#d69e2e;"></div>
-        <span>Neck/Cervical</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="postural">
-        <div class="legend-color" style="background-color:#4c51bf;"></div>
-        <span>Postural</span>
-      </div>
-    </div>
-  </div>
+  </header>
   
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Exercise / Position</th>
-          <th>Primary Tendons Under Tension</th>
-          <th>Key Fascial Structures / Lines</th>
-        </tr>
-      </thead>
-      <tbody id="exercise-table-body">
-        <!-- Table rows will be inserted here by JavaScript -->
-      </tbody>
-    </table>
-  </div>
+  <main class="page-body">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Exercise / Position</th>
+            <th>Primary Tendons Under Tension</th>
+            <th>Key Fascial Structures / Lines</th>
+          </tr>
+        </thead>
+        <tbody id="exercise-table-body">
+          <!-- Table rows will be inserted here by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </main>
   <script>
     // Exercise data embedded directly to avoid CORS issues
     const exerciseData = [
