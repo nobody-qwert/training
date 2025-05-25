@@ -220,38 +220,28 @@ code{
   th, td { padding:0.6rem 0.8rem; }
 }
 
-@media (prefers-color-scheme: dark){
-  body{
-    background:linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-    color:#e2e8f0;
-  }
-  h1 { color:#f7fafc; }
-  p.note, .filter-section, .legend-item, .table-wrapper {
-    background:rgba(45, 55, 72, 0.8);
-    border-color:rgba(255,255,255,0.1);
-    color:#e2e8f0;
-  }
-  .filter-label {
-    color:#f7fafc;
-  }
-  .exercise-count {
-    background:rgba(226, 232, 240, 0.1);
-    color:#cbd5e0;
-  }
-  th {
-    background:linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-  }
-  code {
-    background:rgba(99, 102, 241, 0.2);
-    color:#a78bfa;
-  }
-  /* Adjust colors for dark mode */
-  .upper-static { background-color:#1e3a8a !important; border-left-color:#60a5fa; }
-  .core { background-color:#064e3b !important; border-left-color:#34d399; }
-  .grip { background-color:#7c2d12 !important; border-left-color:#fb923c; }
-  .support { background-color:#581c87 !important; border-left-color:#a78bfa; }
-  .carry { background-color:#134e4a !important; border-left-color:#5eead4; }
-  .lower { background-color:#7f1d1d !important; border-left-color:#f87171; }
-  .neck { background-color:#713f12 !important; border-left-color:#fbbf24; }
-  .postural { background-color:#312e81 !important; border-left-color:#818cf8; }
+/* Force light theme always */
+body{
+  background:#ffffff !important;
+  color:#2d3748 !important;
+}
+
+p.note, .filter-section, .legend-item, .table-wrapper {
+  background:rgba(248,249,250,0.9) !important;
+  border-color:rgba(0,0,0,0.1) !important;
+  color:#2d3748 !important;
+}
+
+.filter-label {
+  color:#2d3748 !important;
+}
+
+.exercise-count {
+  background:rgba(74, 85, 104, 0.1) !important;
+  color:#4a5568 !important;
+}
+
+th {
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color:white !important;
 }
