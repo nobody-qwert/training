@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Isometric Tendon &amp; Fascia Training Reference</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Isometric Tendon &#38; Fascia Training Reference</h1>
+  <p class="note">Static or quasi-static holds commonly used in gymnastics, calisthenics, strong‑man, and rehab work. Select 4–6 moves per session, hold 30–45&nbsp;s × 3–5 sets at ~70–85&nbsp;% MVC, and rest 48–72&nbsp;h before repeating the same tissue group.</p>
+  
+  <div class="filter-section">
+    <h3 class="filter-label">Filter by Exercise Groups:</h3>
+    <div class="filter-controls">
+      <button id="clear-filters" class="clear-btn">Clear Filters</button>
+      <span class="exercise-count" id="exercise-count">30 exercises shown</span>
+    </div>
+    <div class="legend">
+      <div class="legend-item filter-btn" data-group="upper-static">
+        <div class="legend-color" style="background-color:#3182ce;"></div>
+        <span>Upper Body Static</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="core">
+        <div class="legend-color" style="background-color:#38a169;"></div>
+        <span>Core/Abdominal</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="grip">
+        <div class="legend-color" style="background-color:#ed8936;"></div>
+        <span>Grip/Hang</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="support">
+        <div class="legend-color" style="background-color:#805ad5;"></div>
+        <span>Support Positions</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="carry">
+        <div class="legend-color" style="background-color:#319795;"></div>
+        <span>Carries/Loading</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="lower">
+        <div class="legend-color" style="background-color:#e53e3e;"></div>
+        <span>Lower Body</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="neck">
+        <div class="legend-color" style="background-color:#d69e2e;"></div>
+        <span>Neck/Cervical</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="postural">
+        <div class="legend-color" style="background-color:#4c51bf;"></div>
+        <span>Postural</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Exercise / Position</th>
+          <th>Primary Tendons Under Tension</th>
+          <th>Key Fascial Structures / Lines</th>
+        </tr>
+      </thead>
+      <tbody id="exercise-table-body">
+        <!-- Table rows will be inserted here by JavaScript -->
+      </tbody>
+    </table>
+  </div>
+  <script>
+    // Exercise data embedded directly to avoid CORS issues
+    const exerciseData = [
+      {"id":1,"group":"upper-static","name":"Front Lever","tendons":"Latissimus dorsi insertion, long‑head triceps","fascia":"Thoracolumbar fascia, Superficial Back Line (SBL)"},
+      {"id":2,"group":"upper-static","name":"Back Lever","tendons":"Distal biceps, pectoralis major, sub‑scapularis","fascia":"Anterior shoulder fascia, Thoracolumbar fascia"},
+      {"id":3,"group":"upper-static","name":"Planche","tendons":"Wrist flexor/extensor groups, anterior deltoid, RC complex","fascia":"Palmar fascia, Superficial Front Line (SFL)"},
+      {"id":4,"group":"upper-static","name":"Iron Cross (rings)","tendons":"Supraspinatus/infraspinatus, long‑head biceps, pec major","fascia":"Glenohumeral capsule fascia, Deep Arm Line"},
+      {"id":5,"group":"upper-static","name":"Maltese / Swallow","tendons":"Iron‑cross tendons + elbow extensors","fascia":"Deep Arm Line, Sternocostal fascia"},
+      {"id":6,"group":"core","name":"L‑Sit","tendons":"Iliopsoas & rectus femoris tendons, patellar tendon","fascia":"Anterior abdominal fascia, SFL"},
+      {"id":7,"group":"core","name":"V‑Sit / Manna","tendons":"Hip‑flexor & hamstring proximal tendons","fascia":"Posterior chain fascia, Spiral Line"},
+      {"id":8,"group":"grip","name":"Dead Hang","tendons":"Flexor digitorum profundus/superficialis, rotator cuff","fascia":"Brachial fascia, Thoracolumbar fascia"},
+      {"id":9,"group":"grip","name":"Fingerboard Crimp Hang","tendons":"Finger pulley & FDP tendons","fascia":"Palmar aponeurosis"},
+      {"id":10,"group":"support","name":"Ring Support / Dip‑Top Hold","tendons":"Triceps tendon, rotator cuff, sternal‑pec","fascia":"Deep Arm Line"},
+      {"id":11,"group":"support","name":"Handstand Hold","tendons":"Triceps & RC tendons, wrist extensors","fascia":"Palmar & ante‑brachial fascia, SBL"},
+      {"id":12,"group":"core","name":"Pallof Press Hold","tendons":"Oblique aponeuroses, erector‑spinae attachments","fascia":"Thoracolumbar fascia, Spiral Line"},
+      {"id":13,"group":"carry","name":"Overhead Kettlebell Walk","tendons":"Rotator‑cuff, triceps, wrist extensor tendons","fascia":"Shoulder cuff fascia, SBL & SFL crossover"},
+      {"id":14,"group":"carry","name":"Farmers Carry","tendons":"FDP/FDS, FCU/FCR, long‑head biceps, supraspinatus","fascia":"Brachial & palmar fascia"},
+      {"id":15,"group":"carry","name":"Suitcase Carry","tendons":"Same as #14 + QL/oblique tendons","fascia":"Lateral Line"},
+      {"id":16,"group":"carry","name":"Hercules Hold","tendons":"Grip tendons, deltoid/RC insertions","fascia":"Arm Lines, Thoracolumbar fascia"},
+      {"id":17,"group":"carry","name":"Yoke Walk / Hold","tendons":"Trapezius & supraspinous tendons, patellar & Achilles","fascia":"IT‑band fascia, Thoracolumbar fascia"},
+      {"id":18,"group":"lower","name":"Wall‑Sit","tendons":"Patellar & quadriceps tendons, Achilles (static DF)","fascia":"IT‑band fascia, Plantar fascia"},
+      {"id":19,"group":"lower","name":"Spanish‑Squat Hold","tendons":"Patellar & quad tendon focus","fascia":"Fascia lata (anterior)"},
+      {"id":20,"group":"lower","name":"Copenhagen Adductor Hold","tendons":"Adductor longus/brevis/gracilis tendons","fascia":"Adductor fascial compartment"},
+      {"id":21,"group":"lower","name":"Glute Bridge Hold","tendons":"Hamstring proximal, glute max tendon","fascia":"Sacrotuberous ligament, Thoracolumbar fascia"},
+      {"id":22,"group":"lower","name":"Tip‑Toe / Calf‑Raise Hold","tendons":"Achilles tendon","fascia":"Plantar fascia, SBL"},
+      {"id":23,"group":"lower","name":"Ballet \"Relevé\" / Pointe Hold","tendons":"Achilles & tibialis posterior","fascia":"Plantar fascia, Deep Front Line (DFL)"},
+      {"id":24,"group":"neck","name":"Band Cervical Extension Hold","tendons":"Cervical erector & semispinalis tendons","fascia":"Nuchal ligament, Cervical fascia"},
+      {"id":25,"group":"neck","name":"Wrestler Bridge (neck)","tendons":"Neck tendons + SC joint capsule","fascia":"Nuchal ligament"},
+      {"id":26,"group":"postural","name":"Scapular Retraction Hold","tendons":"Rhomboid & lower‑trap tendons","fascia":"Thoracic fascia"},
+      {"id":27,"group":"neck","name":"Band Lateral‑Neck Hold","tendons":"Sternocleidomastoid, upper‑trap tendons","fascia":"Cervical fascia"},
+      {"id":28,"group":"postural","name":"Wrist‑Roller Isometric","tendons":"Wrist extensor tendons","fascia":"Dorsal carpal fascia"},
+      {"id":29,"group":"core","name":"RKC / Ring Plank","tendons":"Rectus abdominis tendon, lats insertion","fascia":"Anterior abdominal & thoracolumbar fascia"},
+      {"id":30,"group":"core","name":"Hollow‑Body Hold","tendons":"Rectus sheath, hip‑flexor tendons","fascia":"SFL, Deep Front Line"}
+    ];
+
+    // Filter state
+    let activeFilters = new Set();
+    
+    // Sort exercise data by group for consistent display
+    const sortedExerciseData = [...exerciseData].sort((a, b) => {
+      const groupOrder = ['upper-static', 'core', 'grip', 'support', 'carry', 'lower', 'neck', 'postural'];
+      return groupOrder.indexOf(a.group) - groupOrder.indexOf(b.group);
+    });
+
+    // Function to render the table
+    function renderTable() {
+      const tbody = document.getElementById('exercise-table-body');
+      const filteredData = activeFilters.size === 0 
+        ? sortedExerciseData 
+        : sortedExerciseData.filter(ex => activeFilters.has(ex.group));
+      
+      tbody.innerHTML = filteredData.map(ex =>
+        `<tr class="${ex.group}">
+          <td>${ex.id}</td>
+          <td>${ex.name}</td>
+          <td>${ex.tendons}</td>
+          <td>${ex.fascia}</td>
+        </tr>`
+      ).join('');
+      
+      // Update exercise count
+      const count = filteredData.length;
+      document.getElementById('exercise-count').textContent = `${count} exercise${count !== 1 ? 's' : ''} shown`;
+    }
+
+    // Function to toggle filter
+    function toggleFilter(group) {
+      if (activeFilters.has(group)) {
+        activeFilters.delete(group);
+      } else {
+        activeFilters.add(group);
+      }
+      
+      // Update button states
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        const btnGroup = btn.dataset.group;
+        if (activeFilters.has(btnGroup)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      
+      renderTable();
+    }
+
+    // Function to clear all filters
+    function clearFilters() {
+      activeFilters.clear();
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      renderTable();
+    }
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click event listeners to filter buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          toggleFilter(btn.dataset.group);
+        });
+        
+        // Add keyboard support
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleFilter(btn.dataset.group);
+          }
+        });
+        
+        // Make buttons focusable
+        btn.setAttribute('tabindex', '0');
+      });
+
+      // Add click event listener to clear filters button
+      document.getElementById('clear-filters').addEventListener('click', clearFilters);
+
+      // Initial render
+      renderTable();
+    });
+  </script>
+</body>
+</html>
