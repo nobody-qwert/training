@@ -84,7 +84,6 @@
         </div>
         <button id="clear-filters" class="clear-btn">Clear Filters</button>
       </div>
-      <span class="exercise-count" id="exercise-count">30 exercises shown</span>
     </div>
   </section>
   
@@ -175,9 +174,8 @@
       // Add tooltip event listeners
       addTooltipListeners();
       
-      // Update exercise count
-      const count = filteredData.length;
-      document.getElementById('exercise-count').textContent = `${count} exercise${count !== 1 ? 's' : ''} shown`;
+      // Update dropdown text with exercise count
+      updateDropdownText();
     }
 
     // Function to toggle filter
@@ -308,8 +306,14 @@
       const selectedCount = activeFilters.size;
       const dropdownText = document.getElementById('dropdown-text');
       
+      // Calculate current exercise count
+      const filteredData = activeFilters.size === 0 
+        ? sortedExerciseData 
+        : sortedExerciseData.filter(ex => activeFilters.has(ex.group));
+      const exerciseCount = filteredData.length;
+      
       if (selectedCount === 0) {
-        dropdownText.textContent = 'Filter by Category';
+        dropdownText.textContent = `[${exerciseCount}] Filter by Category`;
       } else if (selectedCount === 1) {
         const selectedGroup = Array.from(activeFilters)[0];
         const groupNames = {
@@ -322,9 +326,9 @@
           'neck': 'Neck/Cervical',
           'postural': 'Postural'
         };
-        dropdownText.textContent = groupNames[selectedGroup];
+        dropdownText.textContent = `[${exerciseCount}] ${groupNames[selectedGroup]}`;
       } else {
-        dropdownText.textContent = `${selectedCount} categories selected`;
+        dropdownText.textContent = `[${exerciseCount}] ${selectedCount} categories selected`;
       }
     }
 
