@@ -58,20 +58,8 @@
   </header>
   
   <main class="page-body">
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Exercise / Position</th>
-            <th>Primary Tendons Under Tension</th>
-            <th>Key Fascial Structures / Lines</th>
-          </tr>
-        </thead>
-        <tbody id="exercise-table-body">
-          <!-- Table rows will be inserted here by JavaScript -->
-        </tbody>
-      </table>
+    <div class="exercise-grid" id="exercise-grid">
+      <!-- Exercise cards will be inserted here by JavaScript -->
     </div>
   </main>
   <script>
@@ -118,21 +106,40 @@
       return groupOrder.indexOf(a.group) - groupOrder.indexOf(b.group);
     });
 
-    // Function to render the table
-    function renderTable() {
-      const tbody = document.getElementById('exercise-table-body');
+    // Function to render the cards
+    function renderCards() {
+      const grid = document.getElementById('exercise-grid');
       const filteredData = activeFilters.size === 0 
         ? sortedExerciseData 
         : sortedExerciseData.filter(ex => activeFilters.has(ex.group));
       
-      tbody.innerHTML = filteredData.map(ex =>
-        `<tr class="${ex.group}">
-          <td>${ex.id}</td>
-          <td>${ex.name}</td>
-          <td>${ex.tendons}</td>
-          <td>${ex.fascia}</td>
-        </tr>`
+      grid.innerHTML = filteredData.map(ex =>
+        `<div class="exercise-card ${ex.group}" data-group="${ex.group}">
+          <div class="card-image-container">
+            <img src="img/ex_1.png" alt="${ex.name}" class="exercise-image" 
+                 onerror="this.style.display='none'">
+            <button class="info-button" aria-label="Exercise details" data-exercise-id="${ex.id}">ℹ️</button>
+          </div>
+          <div class="card-content">
+            <h3 class="exercise-name">${ex.name}</h3>
+          </div>
+          <div class="tooltip" id="tooltip-${ex.id}">
+            <div class="tooltip-content">
+              <div class="tooltip-section">
+                <strong>Primary Tendons:</strong>
+                <p>${ex.tendons}</p>
+              </div>
+              <div class="tooltip-section">
+                <strong>Key Fascial Structures:</strong>
+                <p>${ex.fascia}</p>
+              </div>
+            </div>
+          </div>
+        </div>`
       ).join('');
+      
+      // Add tooltip event listeners
+      addTooltipListeners();
       
       // Update exercise count
       const count = filteredData.length;
@@ -157,7 +164,55 @@
         }
       });
       
-      renderTable();
+      renderCards();
+    }
+
+    // Function to add tooltip event listeners
+    function addTooltipListeners() {
+      document.querySelectorAll('.info-button').forEach(btn => {
+        const exerciseId = btn.dataset.exerciseId;
+        const tooltip = document.getElementById(`tooltip-${exerciseId}`);
+        
+        // Desktop: hover events
+        btn.addEventListener('mouseenter', () => {
+          tooltip.classList.add('visible');
+        });
+        
+        btn.addEventListener('mouseleave', () => {
+          tooltip.classList.remove('visible');
+        });
+        
+        // Mobile: click events
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Hide all other tooltips
+          document.querySelectorAll('.tooltip').forEach(t => {
+            if (t !== tooltip) t.classList.remove('visible');
+          });
+          
+          // Toggle current tooltip
+          tooltip.classList.toggle('visible');
+        });
+        
+        // Keyboard support
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            tooltip.classList.toggle('visible');
+          }
+        });
+      });
+      
+      // Hide tooltips when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.info-button') && !e.target.closest('.tooltip')) {
+          document.querySelectorAll('.tooltip').forEach(tooltip => {
+            tooltip.classList.remove('visible');
+          });
+        }
+      });
     }
 
     // Function to clear all filters
@@ -166,7 +221,7 @@
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active');
       });
-      renderTable();
+      renderCards();
     }
 
     // Initialize the application
@@ -193,7 +248,7 @@
       document.getElementById('clear-filters').addEventListener('click', clearFilters);
 
       // Initial render
-      renderTable();
+      renderCards();
     });
   </script>
 </body>
