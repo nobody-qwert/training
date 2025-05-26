@@ -17,42 +17,74 @@
   
   <section class="filter-section">
     <div class="filter-controls">
-      <button id="clear-filters" class="clear-btn">Clear Filters</button>
+      <div class="filter-left-controls">
+        <div class="custom-dropdown">
+          <button class="dropdown-toggle" id="dropdown-toggle">
+            <span id="dropdown-text">Filter by Category</span>
+            <span class="dropdown-arrow">▼</span>
+          </button>
+          <div class="dropdown-menu" id="dropdown-menu">
+            <div class="dropdown-item" data-group="upper-static">
+              <input type="checkbox" id="filter-upper-static">
+              <label for="filter-upper-static">
+                <span class="color-dot" style="background-color:#3182ce;"></span>
+                Upper Body Static
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="core">
+              <input type="checkbox" id="filter-core">
+              <label for="filter-core">
+                <span class="color-dot" style="background-color:#38a169;"></span>
+                Core/Abdominal
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="grip">
+              <input type="checkbox" id="filter-grip">
+              <label for="filter-grip">
+                <span class="color-dot" style="background-color:#ed8936;"></span>
+                Grip/Hang
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="support">
+              <input type="checkbox" id="filter-support">
+              <label for="filter-support">
+                <span class="color-dot" style="background-color:#805ad5;"></span>
+                Support Positions
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="carry">
+              <input type="checkbox" id="filter-carry">
+              <label for="filter-carry">
+                <span class="color-dot" style="background-color:#319795;"></span>
+                Carries/Loading
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="lower">
+              <input type="checkbox" id="filter-lower">
+              <label for="filter-lower">
+                <span class="color-dot" style="background-color:#e53e3e;"></span>
+                Lower Body
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="neck">
+              <input type="checkbox" id="filter-neck">
+              <label for="filter-neck">
+                <span class="color-dot" style="background-color:#d69e2e;"></span>
+                Neck/Cervical
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="postural">
+              <input type="checkbox" id="filter-postural">
+              <label for="filter-postural">
+                <span class="color-dot" style="background-color:#4c51bf;"></span>
+                Postural
+              </label>
+            </div>
+          </div>
+        </div>
+        <button id="clear-filters" class="clear-btn">Clear Filters</button>
+      </div>
       <span class="exercise-count" id="exercise-count">30 exercises shown</span>
-    </div>
-    <div class="legend">
-      <div class="legend-item filter-btn" data-group="upper-static">
-        <div class="legend-color" style="background-color:#3182ce;"></div>
-        <span>Upper Body Static</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="core">
-        <div class="legend-color" style="background-color:#38a169;"></div>
-        <span>Core/Abdominal</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="grip">
-        <div class="legend-color" style="background-color:#ed8936;"></div>
-        <span>Grip/Hang</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="support">
-        <div class="legend-color" style="background-color:#805ad5;"></div>
-        <span>Support Positions</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="carry">
-        <div class="legend-color" style="background-color:#319795;"></div>
-        <span>Carries/Loading</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="lower">
-        <div class="legend-color" style="background-color:#e53e3e;"></div>
-        <span>Lower Body</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="neck">
-        <div class="legend-color" style="background-color:#d69e2e;"></div>
-        <span>Neck/Cervical</span>
-      </div>
-      <div class="legend-item filter-btn" data-group="postural">
-        <div class="legend-color" style="background-color:#4c51bf;"></div>
-        <span>Postural</span>
-      </div>
     </div>
   </section>
   
@@ -263,30 +295,103 @@
     // Function to clear all filters
     function clearFilters() {
       activeFilters.clear();
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
+      // Uncheck all checkboxes
+      document.querySelectorAll('.dropdown-item input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
       });
+      updateDropdownText();
+      renderCards();
+    }
+
+    // Function to update dropdown text based on selected filters
+    function updateDropdownText() {
+      const selectedCount = activeFilters.size;
+      const dropdownText = document.getElementById('dropdown-text');
+      
+      if (selectedCount === 0) {
+        dropdownText.textContent = 'Filter by Category';
+      } else if (selectedCount === 1) {
+        const selectedGroup = Array.from(activeFilters)[0];
+        const groupNames = {
+          'upper-static': 'Upper Body Static',
+          'core': 'Core/Abdominal',
+          'grip': 'Grip/Hang',
+          'support': 'Support Positions',
+          'carry': 'Carries/Loading',
+          'lower': 'Lower Body',
+          'neck': 'Neck/Cervical',
+          'postural': 'Postural'
+        };
+        dropdownText.textContent = groupNames[selectedGroup];
+      } else {
+        dropdownText.textContent = `${selectedCount} categories selected`;
+      }
+    }
+
+    // Function to toggle dropdown menu
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdown-menu');
+      const arrow = document.querySelector('.dropdown-arrow');
+      
+      if (menu.classList.contains('show')) {
+        menu.classList.remove('show');
+        arrow.textContent = '▼';
+      } else {
+        menu.classList.add('show');
+        arrow.textContent = '▲';
+      }
+    }
+
+    // Function to close dropdown
+    function closeDropdown() {
+      const menu = document.getElementById('dropdown-menu');
+      const arrow = document.querySelector('.dropdown-arrow');
+      menu.classList.remove('show');
+      arrow.textContent = '▼';
+    }
+
+    // Function to handle checkbox changes
+    function handleCheckboxChange(group, isChecked) {
+      if (isChecked) {
+        activeFilters.add(group);
+      } else {
+        activeFilters.delete(group);
+      }
+      
+      updateDropdownText();
       renderCards();
     }
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function() {
-      // Add click event listeners to filter buttons
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          toggleFilter(btn.dataset.group);
+      const dropdown = document.getElementById('custom-dropdown') || document.querySelector('.custom-dropdown');
+      
+      // Add click event listener to dropdown toggle
+      document.getElementById('dropdown-toggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown();
+      });
+
+      // Add mouse leave event to dropdown container to auto-close
+      if (dropdown) {
+        dropdown.addEventListener('mouseleave', () => {
+          closeDropdown();
         });
-        
-        // Add keyboard support
-        btn.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            toggleFilter(btn.dataset.group);
-          }
+      }
+
+      // Add event listeners to checkboxes
+      document.querySelectorAll('.dropdown-item input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+          const group = e.target.closest('.dropdown-item').dataset.group;
+          handleCheckboxChange(group, e.target.checked);
         });
-        
-        // Make buttons focusable
-        btn.setAttribute('tabindex', '0');
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-dropdown')) {
+          closeDropdown();
+        }
       });
 
       // Add click event listener to clear filters button

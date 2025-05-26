@@ -10,7 +10,7 @@ body{
 
 /* ----------  Page Layout  ---------- */
 .title-section {
-  padding: 2rem 1rem;
+  padding: 1rem 1rem 0.5rem 1rem;
   text-align: center;
   background: linear-gradient(135deg, rgba(248,249,250,0.8) 0%, rgba(255,255,255,0.9) 100%);
 }
@@ -33,9 +33,9 @@ body{
 }
 
 .info-section {
-  padding: 1.5rem;
+  padding: 0.5rem;
   max-width: 500px;
-  margin: 0 auto;
+  margin: 0 auto 0.5rem auto;
 }
 
 .page-body {
@@ -60,7 +60,7 @@ p.note{
   color:#4a5568;
   text-align:center;
   background:rgba(248,249,250,0.8);
-  padding:1.2rem 1.5rem;
+  padding:0.8rem 1rem;
   border-radius:12px;
   border:1px solid rgba(0,0,0,0.1);
   box-shadow:0 2px 4px rgba(0,0,0,0.05);
@@ -70,12 +70,11 @@ p.note{
 .filter-section {
   width:100%;
   max-width: 1400px;
-  margin: 0 auto 2rem auto;
-  background:rgba(248,249,250,0.8);
-  padding:1.5rem;
-  border-radius:12px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.05);
-  border:1px solid rgba(0,0,0,0.1);
+  margin: 0 auto 0.5rem auto;
+  background: transparent;
+  padding: 0 0.75rem;
+  border: none;
+  box-shadow: none;
 }
 
 .filter-label {
@@ -90,9 +89,15 @@ p.note{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:0.8rem;
+  margin-bottom:0;
   flex-wrap:wrap;
   gap:0.8rem;
+}
+
+.filter-left-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .clear-btn {
@@ -127,59 +132,112 @@ p.note{
   border-radius:20px;
 }
 
-/* Legend */
-.legend {
-  display:flex;
-  flex-wrap:wrap;
-  gap:0.8rem;
-  justify-content:center;
-  font-size:0.85rem;
+/* Custom Dropdown */
+.custom-dropdown {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+  min-width: 250px;
 }
 
-.legend-item {
-  display:flex;
-  align-items:center;
-  gap:0.5rem;
-  padding:0.5rem 1rem;
-  border-radius:25px;
-  background:rgba(255,255,255,0.9);
-  border:2px solid rgba(0,0,0,0.1);
-  transition:all 0.2s ease;
-  position:relative;
-  overflow:hidden;
+.dropdown-toggle {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.95);
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #2d3748;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.filter-btn {
-  cursor:pointer;
-  user-select:none;
+.dropdown-toggle:hover {
+  border-color: #6366f1;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
 }
 
-.filter-btn:hover {
-  transform:translateY(-2px);
-  box-shadow:0 4px 12px rgba(0,0,0,0.15);
-  border-color:rgba(0,0,0,0.2);
+.dropdown-toggle:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1), 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.filter-btn:active {
-  transform:translateY(-1px);
+.dropdown-arrow {
+  font-size: 0.8rem;
+  color: #4a5568;
+  transition: transform 0.2s ease;
 }
 
-.filter-btn.active {
-  background:linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.25) 100%);
-  border-color:#6366f1;
-  box-shadow:0 4px 12px rgba(99, 102, 241, 0.2);
-  font-weight:600;
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 2px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
 }
 
-.filter-btn.active .legend-color {
-  box-shadow:0 0 0 2px rgba(255,255,255,0.8), 0 0 0 4px currentColor;
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
-.legend-color {
-  width:14px;
-  height:14px;
-  border-radius:50%;
-  transition:all 0.2s ease;
+.dropdown-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(248,249,250,0.8);
+}
+
+.dropdown-item input[type="checkbox"] {
+  margin: 0;
+  margin-right: 0.75rem;
+  transform: scale(1.1);
+  flex-shrink: 0;
+}
+
+.dropdown-item label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #2d3748;
+  width: 100%;
+  margin: 0;
+}
+
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  flex-shrink: 0;
 }
 
 /* ----------  Exercise Grid & Cards  ---------- */
@@ -187,7 +245,7 @@ p.note{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5rem;
-  padding: 1rem;
+  padding: 0.5rem;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -433,8 +491,26 @@ code{
     max-height: 200px;
   }
   
-  .legend { font-size:0.75rem; }
-  .legend-item { padding:0.3rem 0.6rem; }
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .custom-dropdown {
+    max-width: none;
+    order: 1;
+  }
+  
+  .clear-btn {
+    order: 2;
+    align-self: flex-start;
+  }
+  
+  .exercise-count {
+    order: 3;
+    align-self: flex-end;
+  }
   
   /* Mobile card adjustments */
   .exercise-grid {
@@ -454,6 +530,10 @@ code{
 }
 
 @media (max-width: 480px) {
+  .filter-controls {
+    gap: 0.8rem;
+  }
+  
   .exercise-grid {
     grid-template-columns: 1fr;
     padding: 0.5rem;
