@@ -133,7 +133,7 @@
       grid.innerHTML = filteredData.map(ex =>
         `<div class="exercise-card ${ex.group}" data-group="${ex.group}">
           <div class="card-image-container">
-            <img src="img/ex_1.png" alt="${ex.name}" class="exercise-image" 
+            <img src="img/ex_${ex.id}.png" alt="${ex.name}" class="exercise-image" 
                  onerror="this.style.display='none'">
             <button class="info-button" aria-label="Exercise details" data-exercise-id="${ex.id}">ℹ️</button>
           </div>
