@@ -7,61 +7,78 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="page-header">
-    <div class="header-container">
-      <img src="pop.png" alt="Training Reference" class="header-image">
-      <div class="content-area">
-        <p class="note">Static or quasi-static holds commonly used in gymnastics, calisthenics, strong‑man, and rehab work. Select 4–6 moves per session, hold 30–45&nbsp;s × 3–5 sets at ~70–85&nbsp;% MVC, and rest 48–72&nbsp;h before repeating the same tissue group.</p>
-        
-        <div class="filter-section">
-          <div class="filter-controls">
-            <button id="clear-filters" class="clear-btn">Clear Filters</button>
-            <span class="exercise-count" id="exercise-count">30 exercises shown</span>
-          </div>
-          <div class="legend">
-            <div class="legend-item filter-btn" data-group="upper-static">
-              <div class="legend-color" style="background-color:#3182ce;"></div>
-              <span>Upper Body Static</span>
-            </div>
-            <div class="legend-item filter-btn" data-group="core">
-              <div class="legend-color" style="background-color:#38a169;"></div>
-              <span>Core/Abdominal</span>
-            </div>
-            <div class="legend-item filter-btn" data-group="grip">
-              <div class="legend-color" style="background-color:#ed8936;"></div>
-              <span>Grip/Hang</span>
-            </div>
-            <div class="legend-item filter-btn" data-group="support">
-              <div class="legend-color" style="background-color:#805ad5;"></div>
-              <span>Support Positions</span>
-            </div>
-            <div class="legend-item filter-btn" data-group="carry">
-              <div class="legend-color" style="background-color:#319795;"></div>
-              <span>Carries/Loading</span>
-            </div>
-            <div class="legend-item filter-btn" data-group="lower">
-              <div class="legend-color" style="background-color:#e53e3e;"></div>
-              <span>Lower Body</span>
-            </div>
-            <div class="legend-item filter-btn" data-group="neck">
-              <div class="legend-color" style="background-color:#d69e2e;"></div>
-              <span>Neck/Cervical</span>
-            </div>
-            <div class="legend-item filter-btn" data-group="postural">
-              <div class="legend-color" style="background-color:#4c51bf;"></div>
-              <span>Postural</span>
-            </div>
-          </div>
-        </div>
+  <section class="title-section">
+    <img src="img/pop.png" alt="Isometric Training Reference" class="title-image">
+  </section>
+  
+  <section class="info-section">
+    <p class="note">Static or quasi-static holds commonly used in gymnastics, calisthenics, strong‑man, and rehab work. Select 4–6 moves per session, hold 30–45&nbsp;s × 3–5 sets at ~70–85&nbsp;% MVC, and rest 48–72&nbsp;h before repeating the same tissue group.</p>
+  </section>
+  
+  <section class="filter-section">
+    <div class="filter-controls">
+      <button id="clear-filters" class="clear-btn">Clear Filters</button>
+      <span class="exercise-count" id="exercise-count">30 exercises shown</span>
+    </div>
+    <div class="legend">
+      <div class="legend-item filter-btn" data-group="upper-static">
+        <div class="legend-color" style="background-color:#3182ce;"></div>
+        <span>Upper Body Static</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="core">
+        <div class="legend-color" style="background-color:#38a169;"></div>
+        <span>Core/Abdominal</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="grip">
+        <div class="legend-color" style="background-color:#ed8936;"></div>
+        <span>Grip/Hang</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="support">
+        <div class="legend-color" style="background-color:#805ad5;"></div>
+        <span>Support Positions</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="carry">
+        <div class="legend-color" style="background-color:#319795;"></div>
+        <span>Carries/Loading</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="lower">
+        <div class="legend-color" style="background-color:#e53e3e;"></div>
+        <span>Lower Body</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="neck">
+        <div class="legend-color" style="background-color:#d69e2e;"></div>
+        <span>Neck/Cervical</span>
+      </div>
+      <div class="legend-item filter-btn" data-group="postural">
+        <div class="legend-color" style="background-color:#4c51bf;"></div>
+        <span>Postural</span>
       </div>
     </div>
-  </header>
+  </section>
   
   <main class="page-body">
     <div class="exercise-grid" id="exercise-grid">
       <!-- Exercise cards will be inserted here by JavaScript -->
     </div>
   </main>
+  
+  <!-- Global tooltip -->
+  <div class="tooltip" id="global-tooltip">
+    <div class="tooltip-content">
+      <div class="tooltip-section">
+        <strong>Exercise:</strong>
+        <p id="tooltip-name"></p>
+      </div>
+      <div class="tooltip-section">
+        <strong>Primary Tendons:</strong>
+        <p id="tooltip-tendons"></p>
+      </div>
+      <div class="tooltip-section">
+        <strong>Key Fascial Structures:</strong>
+        <p id="tooltip-fascia"></p>
+      </div>
+    </div>
+  </div>
   <script>
     // Exercise data embedded directly to avoid CORS issues
     const exerciseData = [
@@ -120,21 +137,6 @@
                  onerror="this.style.display='none'">
             <button class="info-button" aria-label="Exercise details" data-exercise-id="${ex.id}">ℹ️</button>
           </div>
-          <div class="card-content">
-            <h3 class="exercise-name">${ex.name}</h3>
-          </div>
-          <div class="tooltip" id="tooltip-${ex.id}">
-            <div class="tooltip-content">
-              <div class="tooltip-section">
-                <strong>Primary Tendons:</strong>
-                <p>${ex.tendons}</p>
-              </div>
-              <div class="tooltip-section">
-                <strong>Key Fascial Structures:</strong>
-                <p>${ex.fascia}</p>
-              </div>
-            </div>
-          </div>
         </div>`
       ).join('');
       
@@ -167,19 +169,60 @@
       renderCards();
     }
 
+    // Function to show tooltip with exercise data
+    function showTooltip(exerciseId, buttonElement) {
+      const exercise = exerciseData.find(ex => ex.id == exerciseId);
+      if (!exercise) return;
+      
+      const tooltip = document.getElementById('global-tooltip');
+      document.getElementById('tooltip-name').textContent = exercise.name;
+      document.getElementById('tooltip-tendons').textContent = exercise.tendons;
+      document.getElementById('tooltip-fascia').textContent = exercise.fascia;
+      
+      // Position tooltip relative to the button
+      const buttonRect = buttonElement.getBoundingClientRect();
+      const tooltipWidth = 320; // max-width from CSS
+      const tooltipHeight = 200; // approximate height
+      
+      // Calculate position - try to place it near the button but keep it on screen
+      let left = buttonRect.left + buttonRect.width / 2 - tooltipWidth / 2;
+      let top = buttonRect.bottom + 10;
+      
+      // Adjust if tooltip would go off screen
+      if (left < 10) left = 10;
+      if (left + tooltipWidth > window.innerWidth - 10) {
+        left = window.innerWidth - tooltipWidth - 10;
+      }
+      
+      if (top + tooltipHeight > window.innerHeight - 10) {
+        top = buttonRect.top - tooltipHeight - 10;
+      }
+      
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
+      tooltip.style.transform = 'none';
+      
+      tooltip.classList.add('visible');
+    }
+    
+    // Function to hide tooltip
+    function hideTooltip() {
+      const tooltip = document.getElementById('global-tooltip');
+      tooltip.classList.remove('visible');
+    }
+
     // Function to add tooltip event listeners
     function addTooltipListeners() {
       document.querySelectorAll('.info-button').forEach(btn => {
         const exerciseId = btn.dataset.exerciseId;
-        const tooltip = document.getElementById(`tooltip-${exerciseId}`);
         
         // Desktop: hover events
         btn.addEventListener('mouseenter', () => {
-          tooltip.classList.add('visible');
+          showTooltip(exerciseId, btn);
         });
         
         btn.addEventListener('mouseleave', () => {
-          tooltip.classList.remove('visible');
+          hideTooltip();
         });
         
         // Mobile: click events
@@ -187,20 +230,24 @@
           e.preventDefault();
           e.stopPropagation();
           
-          // Hide all other tooltips
-          document.querySelectorAll('.tooltip').forEach(t => {
-            if (t !== tooltip) t.classList.remove('visible');
-          });
-          
-          // Toggle current tooltip
-          tooltip.classList.toggle('visible');
+          const tooltip = document.getElementById('global-tooltip');
+          if (tooltip.classList.contains('visible')) {
+            hideTooltip();
+          } else {
+            showTooltip(exerciseId, btn);
+          }
         });
         
         // Keyboard support
         btn.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            tooltip.classList.toggle('visible');
+            const tooltip = document.getElementById('global-tooltip');
+            if (tooltip.classList.contains('visible')) {
+              hideTooltip();
+            } else {
+              showTooltip(exerciseId, btn);
+            }
           }
         });
       });
@@ -208,9 +255,7 @@
       // Hide tooltips when clicking outside
       document.addEventListener('click', (e) => {
         if (!e.target.closest('.info-button') && !e.target.closest('.tooltip')) {
-          document.querySelectorAll('.tooltip').forEach(tooltip => {
-            tooltip.classList.remove('visible');
-          });
+          hideTooltip();
         }
       });
     }
