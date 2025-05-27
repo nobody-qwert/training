@@ -33,9 +33,10 @@ body{
 }
 
 .info-section {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
   width: 100%;
-  margin: 0 0 0.5rem 0;
+  max-width: 1400px;
+  margin: 0 auto 0.5rem auto;
 }
 
 .page-body {
