@@ -358,10 +358,7 @@ p.note{
   color: #cbd5e0;
 }
 
-/* Color coding by exercise groups for cards */
-.exercise-card.upper-static {
-  border-left: 4px solid #3182ce;
-}
+/* Color coding by exercise groups for cards - removed left borders */
 .exercise-card.upper-static .card-image-container::after {
   content: '';
   position: absolute;
@@ -373,9 +370,6 @@ p.note{
   pointer-events: none;
 }
 
-.exercise-card.core {
-  border-left: 4px solid #38a169;
-}
 .exercise-card.core .card-image-container::after {
   content: '';
   position: absolute;
@@ -387,9 +381,6 @@ p.note{
   pointer-events: none;
 }
 
-.exercise-card.grip {
-  border-left: 4px solid #ed8936;
-}
 .exercise-card.grip .card-image-container::after {
   content: '';
   position: absolute;
@@ -401,9 +392,6 @@ p.note{
   pointer-events: none;
 }
 
-.exercise-card.support {
-  border-left: 4px solid #805ad5;
-}
 .exercise-card.support .card-image-container::after {
   content: '';
   position: absolute;
@@ -415,9 +403,6 @@ p.note{
   pointer-events: none;
 }
 
-.exercise-card.carry {
-  border-left: 4px solid #319795;
-}
 .exercise-card.carry .card-image-container::after {
   content: '';
   position: absolute;
@@ -429,9 +414,6 @@ p.note{
   pointer-events: none;
 }
 
-.exercise-card.lower {
-  border-left: 4px solid #e53e3e;
-}
 .exercise-card.lower .card-image-container::after {
   content: '';
   position: absolute;
@@ -443,9 +425,6 @@ p.note{
   pointer-events: none;
 }
 
-.exercise-card.neck {
-  border-left: 4px solid #d69e2e;
-}
 .exercise-card.neck .card-image-container::after {
   content: '';
   position: absolute;
@@ -457,9 +436,6 @@ p.note{
   pointer-events: none;
 }
 
-.exercise-card.postural {
-  border-left: 4px solid #4c51bf;
-}
 .exercise-card.postural .card-image-container::after {
   content: '';
   position: absolute;
