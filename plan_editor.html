@@ -345,26 +345,59 @@ function renderDayBlocks() {
                     const exNameSpan = document.createElement('span');
                     exNameSpan.textContent = ex.name;
 
-                    // Subtle remove (x) button
-                    const removeExBtn = document.createElement('button');
-                    removeExBtn.className = 'remove-exercise-btn';
-                    removeExBtn.textContent = '×';
-                    removeExBtn.title = 'Remove this exercise from session';
-                    removeExBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        // Remove this exercise from the session's exercises array
-                        const idx = session.exercises.indexOf(ex.id);
-                        if (idx > -1) {
-                            session.exercises.splice(idx, 1);
-                            renderDayBlocks();
-                        }
-                    };
+        // Remove exercise button (x)
+        const removeExBtn = document.createElement('button');
+        removeExBtn.className = 'remove-exercise-btn';
+        removeExBtn.textContent = '×';
+        removeExBtn.title = 'Remove this exercise from session';
+        removeExBtn.onclick = (e) => {
+            e.stopPropagation();
+            // Remove this exercise from the session's exercises array
+            const idx = session.exercises.indexOf(ex.id);
+            if (idx > -1) {
+                session.exercises.splice(idx, 1);
+                renderDayBlocks();
+            }
+        };
 
-                    // Style: match other x buttons, but subtle
-                    removeExBtn.style.marginLeft = '0.5rem';
-
-                    li.appendChild(exNameSpan);
-                    li.appendChild(removeExBtn);
+        // Style the remove button to be round like the session remove button
+        removeExBtn.style.cursor = 'pointer';
+        removeExBtn.style.background = 'transparent';
+        removeExBtn.style.color = '#777';
+        removeExBtn.style.border = '1px solid #ddd';
+        removeExBtn.style.borderRadius = '50%';
+        removeExBtn.style.width = '18px';
+        removeExBtn.style.height = '18px';
+        removeExBtn.style.fontSize = '12px';
+        removeExBtn.style.textAlign = 'center';
+        removeExBtn.style.transition = 'background-color 0.2s ease, color 0.2s ease';
+        removeExBtn.style.fontWeight = 'bold';
+        removeExBtn.style.display = 'flex';
+        removeExBtn.style.alignItems = 'center';
+        removeExBtn.style.justifyContent = 'center';
+        removeExBtn.style.marginLeft = 'auto';
+        removeExBtn.style.marginRight = '0';
+        
+        // Add hover effect
+        removeExBtn.onmouseover = () => {
+            removeExBtn.style.backgroundColor = '#f0f0f0';
+            removeExBtn.style.color = '#d32f2f';
+        };
+        removeExBtn.onmouseout = () => {
+            removeExBtn.style.backgroundColor = 'transparent';
+            removeExBtn.style.color = '#777';
+        };
+        
+        // Create a container for the exercise item content to allow flex layout
+        const liContent = document.createElement('div');
+        liContent.style.display = 'flex';
+        liContent.style.width = '100%';
+        liContent.style.alignItems = 'center';
+        liContent.style.justifyContent = 'space-between';
+        
+        liContent.appendChild(exNameSpan);
+        liContent.appendChild(removeExBtn);
+        li.appendChild(liContent);
                     ul.appendChild(li);
                 }
             });
