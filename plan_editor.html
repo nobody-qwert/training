@@ -585,55 +585,67 @@ function loadPredefinedPlan(planName) {
     const plan = predefinedPlansData.find(p => p.name === planName);
     if (!plan) return;
 
-    const newPlanStructure = {};
-    Object.keys(workoutPlan).forEach(dayKey => { 
-        newPlanStructure[dayKey] = []; 
-    });
-    
-            // Create mapping for different day formats
-            const dayMapping = {
-                // Map full day names to Day numbers
-                'Monday': 'Day 1', 'Tuesday': 'Day 2', 'Wednesday': 'Day 3',
-                'Thursday': 'Day 4', 'Friday': 'Day 5', 'Saturday': 'Day 6', 'Sunday': 'Day 7',
-                // Map abbreviated formats like "Day X (Mon)"
-                'Day 1 (Mon)': 'Day 1', 'Day 2 (Tue)': 'Day 2', 'Day 2 (Wed)': 'Day 2',
-                'Day 3 (Thu)': 'Day 3', 'Day 3 (Fri)': 'Day 3', 'Day 4 (Sat)': 'Day 4',
-                'Day 5 (Sun)': 'Day 5', // Add other specific mappings as needed
-            };
+    const newWorkoutData = {}; // This will be populated directly from the predefined plan
 
-            Object.entries(plan.days).forEach(([planDayKey, sessionsData]) => {
-                let targetDayKey = dayMapping[planDayKey] || planDayKey; // Attempt direct map or use original
+    // Create mapping for different day formats
+    const dayMapping = {
+        // Map full day names to Day numbers
+        'Monday': 'Day 1', 'Tuesday': 'Day 2', 'Wednesday': 'Day 3',
+        'Thursday': 'Day 4', 'Friday': 'Day 5', 'Saturday': 'Day 6', 'Sunday': 'Day 7',
+        // Map abbreviated formats like "Day X (Mon)" - keeping original mappings
+        'Day 1 (Mon)': 'Day 1', 'Day 2 (Tue)': 'Day 2', 'Day 2 (Wed)': 'Day 2',
+        'Day 3 (Thu)': 'Day 3', 'Day 3 (Fri)': 'Day 3', 'Day 4 (Sat)': 'Day 4',
+        'Day 5 (Sun)': 'Day 5', // Add other specific mappings as needed
+    };
 
-                // Fallback for "Day X" format if not in dayMapping
-                if (!newPlanStructure.hasOwnProperty(targetDayKey)) {
-                    const dayMatch = planDayKey.match(/^Day\s*(\d+)/i); // Match "Day" followed by number
-                    if (dayMatch && dayMatch[1]) {
-                        targetDayKey = `Day ${dayMatch[1]}`;
-                    }
-                }
+    Object.entries(plan.days).forEach(([planDayKey, sessionsData]) => {
+        let targetDayKey = dayMapping[planDayKey] || planDayKey; // Attempt direct map or use original key
 
-                if (newPlanStructure.hasOwnProperty(targetDayKey)) {
-                    newPlanStructure[targetDayKey] = sessionsData.map((sess, index) => ({
-                        sessionId: generateSessionId(),
-                        sessionName: sess.sessionName || `Session ${index + 1}`,
-                        exercises: [...(sess.exercises || [])]
-                    }));
-                } else {
-                    console.warn(`Could not map day key: "${planDayKey}" to a valid day in the plan structure. Target attempted: "${targetDayKey}"`);
-                }
-            });
-    
-    const finalPlan = {};
-    Object.keys(newPlanStructure).sort((a, b) => parseInt(a.split(' ')[1]) - parseInt(b.split(' ')[1])).forEach(dayKey => {
-        if (newPlanStructure[dayKey] && newPlanStructure[dayKey].length > 0) {
-            finalPlan[dayKey] = newPlanStructure[dayKey];
+        // Normalize to "Day X" format if possible
+        const dayNumberMatch = targetDayKey.match(/Day\s*(\d+)/i);
+        if (dayNumberMatch && dayNumberMatch[1]) {
+            targetDayKey = `Day ${dayNumberMatch[1]}`; // Standardize to "Day X"
+        } else if (planDayKey.match(/^Day\s*\d+$/i)) {
+            // If the original planDayKey from plan.days is already "Day X", use it
+            targetDayKey = planDayKey;
         }
+        else {
+            // If it's not mappable to "Day X" and not already "Day X", skip it
+            // This ensures workoutPlan keys are consistently "Day X"
+            console.warn(`Predefined plan day key: "${planDayKey}" (processed as "${targetDayKey}") does not conform to a recognized "Day X" format and will be skipped.`);
+            return; // Go to the next entry in plan.days
+        }
+        
+        // Ensure sessionsData is an array before mapping, and exercises within sessions are also arrays
+        const sessionsArray = Array.isArray(sessionsData) ? sessionsData : [];
+        
+        newWorkoutData[targetDayKey] = sessionsArray.map((sess, index) => ({
+            sessionId: generateSessionId(),
+            sessionName: sess.sessionName || `Session ${index + 1}`,
+            exercises: Array.isArray(sess.exercises) ? [...sess.exercises] : [] 
+        }));
     });
-
-    if (Object.keys(finalPlan).length === 0) {
-        finalPlan['Day 1'] = [{ sessionId: generateSessionId(), sessionName: 'Session 1', exercises: [] }];
+    
+    // If newWorkoutData is empty after processing (e.g., plan was empty or all days were skipped), create a default Day 1
+    if (Object.keys(newWorkoutData).length === 0) {
+        console.warn("Predefined plan resulted in an empty schedule or all days were skipped. Defaulting to a single empty day.");
+        newWorkoutData['Day 1'] = [{ sessionId: generateSessionId(), sessionName: 'Session 1', exercises: [] }];
     }
-    workoutPlan = finalPlan;
+    
+    // Sort the days in the newWorkoutData by "Day X" number before assigning to workoutPlan
+    const sortedDaysPlan = {};
+    Object.keys(newWorkoutData)
+        .sort((a, b) => {
+            // Extract numbers for sorting (e.g., "Day 1", "Day 10")
+            const numA = parseInt(a.match(/(\d+)/)[0]);
+            const numB = parseInt(b.match(/(\d+)/)[0]);
+            return numA - numB;
+        })
+        .forEach(dayKey => {
+            sortedDaysPlan[dayKey] = newWorkoutData[dayKey];
+        });
+
+    workoutPlan = sortedDaysPlan;
     renderDayBlocks();
 }
 
@@ -651,6 +663,23 @@ function addDay() {
     const newDayKey = `Day ${newDayNumber}`;
     workoutPlan[newDayKey] = [{ sessionId: generateSessionId(), sessionName: 'Session 1', exercises: [] }];
     renderDayBlocks();
+    
+    // Scroll to the newly added day
+    setTimeout(() => {
+        const newDayElement = document.querySelector(`[data-day-key="${newDayKey}"]`);
+        if (newDayElement) {
+            // Scroll the plan container to show the new day
+            const planContainer = document.getElementById('plan-section-container');
+            planContainer.scrollTop = planContainer.scrollHeight;
+            
+            // Add a brief highlight effect to make the new day more noticeable
+            newDayElement.style.transition = 'background-color 0.5s ease';
+            newDayElement.style.backgroundColor = '#f0f7ff'; // Light blue highlight
+            setTimeout(() => {
+                newDayElement.style.backgroundColor = '#f9f9f9'; // Fade back to original color
+            }, 1000);
+        }
+    }, 50); // Small delay to ensure the DOM has updated
 }
 
 function removeDay(dayKey) {
@@ -658,10 +687,22 @@ function removeDay(dayKey) {
         alert("The plan must have at least one day.");
         return;
     }
-    if (confirm(`Are you sure you want to remove ${dayKey}? This action cannot be undone.`)) {
+    
+    // Check if the day is empty (no exercises in any session)
+    const dayIsEmpty = workoutPlan[dayKey].every(session => 
+        !session.exercises || session.exercises.length === 0
+    );
+    
+    // If the day is empty, remove without confirmation
+    // If it has exercises, show confirmation to prevent accidental data loss
+    let shouldRemove = dayIsEmpty;
+    
+    if (!dayIsEmpty) {
+        shouldRemove = confirm(`Are you sure you want to remove ${dayKey}? This action cannot be undone.`);
+    }
+    
+    if (shouldRemove) {
         delete workoutPlan[dayKey];
-        // Consider re-numbering days if strict "Day 1, Day 2..." sequence is important
-        // For now, removing the key is sufficient.
         renderDayBlocks();
     }
 }
