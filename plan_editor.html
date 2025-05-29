@@ -20,7 +20,7 @@
 
   /* ─── Headings & Controls ────────────────────────────────────── */
   section h2{font-size:1.25rem;margin-bottom:.75rem;border-bottom:2px solid #eaeaea;padding-bottom:.5rem}
-  .plan-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  .plan-controls { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 1rem; }
   .plan-controls label { margin-right: 0.5rem; font-weight: 500; }
   .plan-controls select { padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid #ccc; font-size: 0.9rem; }
 
@@ -163,12 +163,10 @@
   <main>
     <section style="display: flex; flex-direction: column; height: 100%;">
       <div class="plan-controls">
-        <label for="predefined-plan-select">Load Predefined Plan:</label>
         <select id="predefined-plan-select">
           <option value="">-- Select a Plan --</option>
         </select>
       </div>
-      <h2>Workout Plan</h2>
       <div id="plan-section-container">
         <!-- Day blocks and sessions will be inserted here by JavaScript -->
         <!-- The Add New Day button will be added here by JavaScript -->
