@@ -6,6 +6,11 @@
   <title>Training Hub - Isometrics & Workout Planner</title>
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* Global styles for landing page */
+    body {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    
     /* Landing page specific styles */
     .landing-container {
       max-width: 1200px;
@@ -57,15 +62,18 @@
 
     .feature-image-container {
       width: 100%;
-      height: 250px;
+      height: 300px;
       overflow: hidden;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .feature-image {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       transition: transform 0.3s ease;
     }
 
@@ -94,7 +102,7 @@
 
     .feature-button {
       display: inline-block;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #38b2ac 0%, #0bc5ea 100%);
       color: white;
       padding: 0.75rem 1.5rem;
       border-radius: 8px;
@@ -110,6 +118,7 @@
     .feature-button:hover {
       transform: translateY(-2px);
       box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+      background: linear-gradient(135deg, #0bc5ea 0%, #38b2ac 100%);
     }
 
     .feature-button:active {
@@ -139,7 +148,7 @@
       }
       
       .feature-image-container {
-        height: 200px;
+        height: 250px;
       }
     }
   </style>
@@ -154,7 +163,7 @@
     <div class="feature-grid">
       <div class="feature-card">
         <div class="feature-image-container">
-          <img src="img/pop.jpg" alt="Isometric Training" class="feature-image">
+          <img src="img/ex_3.jpg" alt="Isometric Training" class="feature-image">
         </div>
         <div class="feature-content">
           <h2 class="feature-title">Isometric Training Reference</h2>
@@ -169,7 +178,7 @@
 
       <div class="feature-card">
         <div class="feature-image-container">
-          <img src="img/ex_13.jpg" alt="Workout Planner" class="feature-image">
+          <img src="img/ex_7.jpg" alt="Workout Planner" class="feature-image">
         </div>
         <div class="feature-content">
           <h2 class="feature-title">Workout Planner</h2>
