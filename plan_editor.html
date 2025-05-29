@@ -171,9 +171,7 @@
       <h2>Workout Plan</h2>
       <div id="plan-section-container">
         <!-- Day blocks and sessions will be inserted here by JavaScript -->
-      </div>
-      <div id="add-day-action-container" style="text-align: center; margin-top: 1rem; padding-bottom: 1rem;">
-        <button id="add-day-btn" class="action-btn">Add New Day</button>
+        <!-- The Add New Day button will be added here by JavaScript -->
       </div>
     </section>
   </main>
@@ -407,6 +405,58 @@ function renderDayBlocks() {
         });
         planSectionContainer.appendChild(dayBlock);
     });
+    
+    // Add the "Add New Day" button as the last item in the plan section
+    const addDayBlock = document.createElement('div');
+    addDayBlock.className = 'day-block add-day-block';
+    addDayBlock.style.display = 'flex';
+    addDayBlock.style.alignItems = 'center';
+    addDayBlock.style.justifyContent = 'center';
+    addDayBlock.style.cursor = 'pointer';
+    addDayBlock.style.backgroundColor = '#f5f5f5';
+    addDayBlock.style.border = '1px dashed #ccc';
+    addDayBlock.style.padding = '1rem';
+    addDayBlock.style.marginBottom = '1.5rem';
+    addDayBlock.style.transition = 'background-color 0.2s ease';
+    
+    // Create a container for the + icon and text
+    const addDayContent = document.createElement('div');
+    addDayContent.style.display = 'flex';
+    addDayContent.style.alignItems = 'center';
+    addDayContent.style.gap = '0.5rem';
+    
+    // Create the + icon
+    const plusIcon = document.createElement('span');
+    plusIcon.textContent = '+';
+    plusIcon.style.fontSize = '1.5rem';
+    plusIcon.style.fontWeight = 'bold';
+    plusIcon.style.color = '#666';
+    
+    // Create the text
+    const addDayText = document.createElement('span');
+    addDayText.textContent = 'Add New Day';
+    addDayText.style.fontSize = '1rem';
+    addDayText.style.color = '#666';
+    
+    // Add hover effect
+    addDayBlock.onmouseover = () => {
+        addDayBlock.style.backgroundColor = '#e9e9e9';
+    };
+    addDayBlock.onmouseout = () => {
+        addDayBlock.style.backgroundColor = '#f5f5f5';
+    };
+    
+    // Add click handler
+    addDayBlock.onclick = addDay;
+    
+    // Assemble the button
+    addDayContent.appendChild(plusIcon);
+    addDayContent.appendChild(addDayText);
+    addDayBlock.appendChild(addDayContent);
+    
+    // Add to the plan section container
+    planSectionContainer.appendChild(addDayBlock);
+    
     addDropzoneEventListeners();
 }
 
@@ -816,12 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const addDayButton = document.getElementById('add-day-btn');
-    if (addDayButton) {
-        addDayButton.addEventListener('click', addDay);
-    } else {
-        console.error("Add Day button not found");
-    }
+    // The Add New Day button is now created dynamically in renderDayBlocks()
 
     renderDayBlocks(); 
 });
