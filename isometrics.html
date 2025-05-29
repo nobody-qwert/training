@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Isometric Tendon & Fascia Training Reference</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Navigation bar for internal pages */
+    .nav-bar {
+      background: #fff;
+      padding: 0.75rem 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #1a202c;
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .nav-link {
+      color: #4a5568;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+    }
+    
+    .nav-link:hover {
+      color: #667eea;
+      background: rgba(102, 126, 234, 0.1);
+    }
+    
+    .nav-link.active {
+      color: #667eea;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+      .nav-bar {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.75rem;
+      }
+      
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <div class="nav-bar">
+    <a href="index.html" class="nav-logo">Training Hub</a>
+    <div class="nav-links">
+      <a href="isometrics.html" class="nav-link active">Isometrics</a>
+      <a href="plan_editor.html" class="nav-link">Workout Planner</a>
+    </div>
+  </div>
+
+  <section class="title-section">
+    <img src="img/pop.jpg" alt="Isometric Training Reference" class="title-image">
+  </section>
+  
+  <section class="info-section">
+    <p class="note">Static or quasi-static holds commonly used in gymnastics, calisthenics, strong‑man, and rehab work. Select 4–6 moves per session, hold 30–45&nbsp;s × 3–5 sets at ~70–85&nbsp;% MVC, and rest 48–72&nbsp;h before repeating the same tissue group.</p>
+  </section>
+  
+  <section class="filter-section">
+    <div class="filter-controls">
+      <div class="filter-left-controls">
+        <div class="custom-dropdown">
+          <button class="dropdown-toggle" id="dropdown-toggle">
+            <span id="dropdown-text">Filter by Category</span>
+            <span class="dropdown-arrow">▼</span>
+          </button>
+          <div class="dropdown-menu" id="dropdown-menu">
+            <div class="dropdown-item" data-group="Upper Body Static Hold">
+              <input type="checkbox" id="filter-upper-body-static-hold">
+              <label for="filter-upper-body-static-hold">
+                <span class="color-dot" style="background-color:#3182ce;"></span>
+                Upper Body Static Hold
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="Core Static Hold">
+              <input type="checkbox" id="filter-core-static-hold">
+              <label for="filter-core-static-hold">
+                <span class="color-dot" style="background-color:#38a169;"></span>
+                Core Static Hold
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="Grip Static Hold">
+              <input type="checkbox" id="filter-grip-static-hold">
+              <label for="filter-grip-static-hold">
+                <span class="color-dot" style="background-color:#ed8936;"></span>
+                Grip Static Hold
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="Support Static Hold">
+              <input type="checkbox" id="filter-support-static-hold">
+              <label for="filter-support-static-hold">
+                <span class="color-dot" style="background-color:#805ad5;"></span>
+                Support Static Hold
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="Carries Static Hold">
+              <input type="checkbox" id="filter-carries-static-hold">
+              <label for="filter-carries-static-hold">
+                <span class="color-dot" style="background-color:#319795;"></span>
+                Carries Static Hold
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="Lower Body Static Hold">
+              <input type="checkbox" id="filter-lower-body-static-hold">
+              <label for="filter-lower-body-static-hold">
+                <span class="color-dot" style="background-color:#e53e3e;"></span>
+                Lower Body Static Hold
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="Neck Static Hold">
+              <input type="checkbox" id="filter-neck-static-hold">
+              <label for="filter-neck-static-hold">
+                <span class="color-dot" style="background-color:#d69e2e;"></span>
+                Neck Static Hold
+              </label>
+            </div>
+            <div class="dropdown-item" data-group="Postural Static Hold">
+              <input type="checkbox" id="filter-postural-static-hold">
+              <label for="filter-postural-static-hold">
+                <span class="color-dot" style="background-color:#4c51bf;"></span>
+                Postural Static Hold
+              </label>
+            </div>
+          </div>
+        </div>
+        <button id="clear-filters" class="clear-btn">Clear Filters</button>
+      </div>
+    </div>
+  </section>
+  
+  <main class="page-body">
+    <div class="exercise-grid" id="exercise-grid">
+      <!-- Exercise cards will be inserted here by JavaScript -->
+    </div>
+  </main>
+  
+  <!-- Global tooltip -->
+  <div class="tooltip" id="global-tooltip">
+    <div class="tooltip-content">
+      <div class="tooltip-section">
+        <strong>Exercise:</strong>
+        <p id="tooltip-name"></p>
+      </div>
+      <div class="tooltip-section">
+        <strong>Primary Tendons:</strong>
+        <p id="tooltip-tendons"></p>
+      </div>
+      <div class="tooltip-section">
+        <strong>Key Fascial Structures:</strong>
+        <p id="tooltip-fascia"></p>
+      </div>
+    </div>
+  </div>
+  <script src="all_exercises_data.js"></script>
+  <script>
+    // Filter allExercises to get only isometric exercises
+    const isometricExercises = allExercises.filter(ex => ex.isIsometric === true);
+
+    // Filter state
+    let activeFilters = new Set();
+    
+    // Define the order of categories for sorting and for the dropdown
+    const categoryOrder = [
+        "Upper Body Static Hold", 
+        "Core Static Hold", 
+        "Grip Static Hold", 
+        "Support Static Hold", 
+        "Carries Static Hold", 
+        "Lower Body Static Hold", 
+        "Neck Static Hold", 
+        "Postural Static Hold"
+    ];
+
+    // Sort exercise data by category for consistent display
+    const sortedIsometricExercises = [...isometricExercises].sort((a, b) => {
+      return categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category);
+    });
+
+    // Function to render the cards
+    function renderCards() {
+      const grid = document.getElementById('exercise-grid');
+      const filteredData = activeFilters.size === 0 
+        ? sortedIsometricExercises 
+        : sortedIsometricExercises.filter(ex => activeFilters.has(ex.category)); // Use category for filtering
+      
+      grid.innerHTML = filteredData.map(ex =>
+        // Use ex.category for class, ex.image for src, ex.id for data-exercise-id
+        `<div class="exercise-card ${ex.category.toLowerCase().replace(/\s+/g, '-')}" data-group="${ex.category}">
+          <div class="card-image-container">
+            <img src="${ex.image}" alt="${ex.name}" class="exercise-image" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="exercise-name-fallback" style="display: none;">${ex.name}</div>
+            <button class="info-button" aria-label="Exercise details" data-exercise-id="${ex.id}">ℹ️</button>
+          </div>
+        </div>`
+      ).join('');
+      
+      addTooltipListeners();
+      updateDropdownText();
+    }
+
+    // Function to toggle filter (uses category now)
+    function toggleFilter(category) {
+      if (activeFilters.has(category)) {
+        activeFilters.delete(category);
+      } else {
+        activeFilters.add(category);
+      }
+      renderCards();
+    }
+
+    // Function to show tooltip with exercise data
+    function showTooltip(exerciseId, buttonElement) {
+      // Find exercise in isometricExercises by its unique id
+      const exercise = isometricExercises.find(ex => ex.id === exerciseId);
+      if (!exercise) return;
+      
+      const tooltip = document.getElementById('global-tooltip');
+      document.getElementById('tooltip-name').textContent = exercise.name;
+      document.getElementById('tooltip-tendons').textContent = exercise.tendons || 'N/A';
+      document.getElementById('tooltip-fascia').textContent = exercise.fascia || 'N/A';
+      
+      const buttonRect = buttonElement.getBoundingClientRect();
+      const tooltipWidth = 320; 
+      const tooltipHeight = 200; 
+      
+      let left = buttonRect.left + buttonRect.width / 2 - tooltipWidth / 2;
+      let top = buttonRect.bottom + 10;
+      
+      if (left < 10) left = 10;
+      if (left + tooltipWidth > window.innerWidth - 10) {
+        left = window.innerWidth - tooltipWidth - 10;
+      }
+      if (top + tooltipHeight > window.innerHeight - 10) {
+        top = buttonRect.top - tooltipHeight - 10;
+      }
+      
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
+      tooltip.style.transform = 'none';
+      tooltip.classList.add('visible');
+    }
+    
+    function hideTooltip() {
+      const tooltip = document.getElementById('global-tooltip');
+      tooltip.classList.remove('visible');
+    }
+
+    function addTooltipListeners() {
+      document.querySelectorAll('.info-button').forEach(btn => {
+        const exerciseId = btn.dataset.exerciseId;
+        
+        btn.addEventListener('mouseenter', () => showTooltip(exerciseId, btn));
+        btn.addEventListener('mouseleave', hideTooltip);
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const tooltip = document.getElementById('global-tooltip');
+          if (tooltip.classList.contains('visible') && tooltip.dataset.currentExerciseId === exerciseId) {
+            hideTooltip();
+          } else {
+            tooltip.dataset.currentExerciseId = exerciseId;
+            showTooltip(exerciseId, btn);
+          }
+        });
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const tooltip = document.getElementById('global-tooltip');
+            if (tooltip.classList.contains('visible') && tooltip.dataset.currentExerciseId === exerciseId) {
+              hideTooltip();
+            } else {
+              tooltip.dataset.currentExerciseId = exerciseId;
+              showTooltip(exerciseId, btn);
+            }
+          }
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.info-button') && !e.target.closest('.tooltip')) {
+          hideTooltip();
+        }
+      });
+    }
+
+    function clearFilters() {
+      activeFilters.clear();
+      document.querySelectorAll('.dropdown-item input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+      });
+      renderCards();
+    }
+
+    // Function to update dropdown text based on selected filters
+    function updateDropdownText() {
+      const selectedCount = activeFilters.size;
+      const dropdownTextEl = document.getElementById('dropdown-text');
+      
+      const currentExerciseCount = activeFilters.size === 0 
+        ? sortedIsometricExercises.length
+        : sortedIsometricExercises.filter(ex => activeFilters.has(ex.category)).length;
+      
+      if (selectedCount === 0) {
+        dropdownTextEl.textContent = `[${currentExerciseCount}] Filter by Category`;
+      } else if (selectedCount === 1) {
+        const selectedCategory = Array.from(activeFilters)[0];
+        // The label for category is already in the HTML, so we can use it directly.
+        // Or, create a mapping if needed, but for now, direct category name is fine.
+        dropdownTextEl.textContent = `[${currentExerciseCount}] ${selectedCategory}`;
+      } else {
+        dropdownTextEl.textContent = `[${currentExerciseCount}] ${selectedCount} categories selected`;
+      }
+    }
+
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdown-menu');
+      const arrow = document.querySelector('.dropdown-arrow');
+      menu.classList.toggle('show');
+      arrow.textContent = menu.classList.contains('show') ? '▲' : '▼';
+    }
+
+    function closeDropdown() {
+      const menu = document.getElementById('dropdown-menu');
+      const arrow = document.querySelector('.dropdown-arrow');
+      menu.classList.remove('show');
+      arrow.textContent = '▼';
+    }
+
+    // Function to handle checkbox changes (uses category now)
+    function handleCheckboxChange(category, isChecked) {
+      if (isChecked) {
+        activeFilters.add(category);
+      } else {
+        activeFilters.delete(category);
+      }
+      renderCards(); // renderCards will call updateDropdownText
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdownContainer = document.querySelector('.custom-dropdown');
+      document.getElementById('dropdown-toggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown();
+      });
+
+      if (dropdownContainer) {
+        dropdownContainer.addEventListener('mouseleave', closeDropdown);
+      }
+
+      document.querySelectorAll('.dropdown-item input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+          // data-group now holds the full category name string
+          const category = e.target.closest('.dropdown-item').dataset.group;
+          handleCheckboxChange(category, e.target.checked);
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-dropdown')) {
+          closeDropdown();
+        }
+      });
+
+      document.getElementById('clear-filters').addEventListener('click', clearFilters);
+      renderCards(); // Initial render
+    });
+  </script>
+</body>
+</html>

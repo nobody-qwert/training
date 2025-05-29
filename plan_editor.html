@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Workout Routine & Plan</title>
+<style>
+  /* ─── Base reset ─────────────────────────────────────────────── */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f5f5f5;color:#333;line-height:1.5}
+  header{background:#fff;text-align:center;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  header h1{font-size:1.8rem}
+
+  /* ─── Layout ─────────────────────────────────────────────────── */
+  .wrapper{display:flex;gap:1rem;max-width:1100px;margin:2rem auto;padding:0 1rem; min-height: calc(100vh - 12rem)} /* Adjusted min-height */
+  aside,main{background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column}
+  aside{flex:0 0 35%;padding:1rem; max-height: calc(100vh - 12rem); } /* Max height for aside */
+  main{flex:1;padding:1rem; max-height: calc(100vh - 12rem); } /* Max height for main */
+  
+  /* ─── Scrollable sections ───────────────────────────────────── */
+  #exercise-list-container, #plan-section-container { /* Renamed for clarity */
+    overflow-y:auto;
+    flex-grow: 1; /* Allow these to take available space and scroll */
+    padding-right:0.5rem;
+  }
+   #exercise-list{list-style:none; padding-left: 0;}
+
+
+  /* ─── Headings ───────────────────────────────────────────────── */
+  section h2{font-size:1.25rem;margin-bottom:.75rem;border-bottom:2px solid #eaeaea;padding-bottom:.5rem}
+  .goal-heading {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.25rem;
+  }
+  .goal-heading:first-child {
+    margin-top: 0;
+  }
+  .category-heading{
+    font-weight:bold;
+    padding:.4rem .6rem;
+    margin-top:0.8rem;
+    margin-bottom:.3rem;
+    border-radius:6px;
+    font-size:0.9rem;
+    /* border-left:3px solid rgba(0,0,0,.15); */
+    margin-left: 0.5rem; /* Indent category under goal */
+  }
+
+  .exercise-item{
+    margin:.3rem 0 .3rem 1.5rem; /* Further indent exercises */
+    padding:.35rem .75rem;
+    border-radius:6px;
+    cursor:grab;
+    user-select:none;
+    transition:transform .1s ease,box-shadow .1s ease;
+    font-size: 0.85rem;
+  }
+  .exercise-item:active{transform:scale(.97);box-shadow:0 0 4px rgba(0,0,0,.15)}
+
+  /* ─── Category colours (data‑attribute selectors are now dynamic via JS) ───────────── */
+  /* Styles will be applied by JS based on 'category' from allExercises */
+
+  /* ─── Workout plan lists ────────────────────────────────────── */
+  .day-block{margin-bottom:1.75rem}
+  .day-block ul{list-style:none;min-height:2rem;padding:.25rem .5rem;border:1px dashed #ccc;border-radius:6px}
+  .day-block li{
+    margin:.35rem 0;
+    padding:.35rem .75rem;
+    padding-left:1rem;
+    position:relative;
+    border-radius:4px;
+    cursor:grab;
+    user-select:none;
+    font-size: 0.85rem;
+  }
+  .day-block li::before{content:'•';left:0.25rem;position:absolute;color:#007BFF}
+  .day-block li:active{transform:scale(.97);box-shadow:0 0 4px rgba(0,0,0,.15)}
+  
+  .day-header{display:flex;align-items:center;margin-bottom:0.5rem}
+  .day-header h3{margin-right:1rem}
+  
+  .workout-summary{
+    font-size:0.8rem;
+    color:#666;
+    margin:0;
+    padding-left:0.25rem;
+    display:flex;
+    flex-wrap:wrap; /* Allow tags to wrap */
+    align-items:center;
+    gap: 0.3rem;
+  }
+  .category-tag{
+    display:inline-block;
+    padding:0.15rem 0.4rem;
+    /* margin-right:0.3rem; */ /* Replaced by gap */
+    /* margin-bottom:0.3rem; */ /* Replaced by gap */
+    border-radius:4px;
+    font-size:0.7rem;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  /* Navigation bar for internal pages */
+  .nav-bar {
+    background: #fff;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky; /* Make nav bar sticky */
+    top: 0;
+    z-index: 1000; /* Ensure it's above other content */
+  }
+  
+  .nav-logo {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #1a202c;
+    text-decoration: none;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .nav-link {
+    color: #4a5568;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+  }
+  
+  .nav-link:hover {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+  }
+  
+  .nav-link.active {
+    color: #667eea;
+    font-weight: 600;
+  }
+  
+  @media (max-width: 768px) {
+    .nav-bar {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      position: static; /* Or relative, if sticky causes issues on mobile */
+    }
+    .wrapper {
+      flex-direction: column;
+      height: auto; /* Allow content to determine height */
+      min-height: 0;
+    }
+    aside, main {
+        flex-basis: auto; /* Reset flex-basis */
+        max-height: none; /* Remove max-height for mobile */
+    }
+    #exercise-list-container, #plan-section-container {
+        max-height: 40vh; /* Example max-height for scrollable areas on mobile */
+    }
+    .nav-links {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<div class="nav-bar">
+  <a href="index.html" class="nav-logo">Training Hub</a>
+  <div class="nav-links">
+    <a href="isometrics.html" class="nav-link">Isometrics</a>
+    <a href="plan_editor.html" class="nav-link active">Workout Planner</a>
+  </div>
+</div>
+
+<header><h1>Workout Routine & Plan</h1></header>
+
+<div class="wrapper">
+  <aside>
+    <section style="display: flex; flex-direction: column; height: 100%;">
+      <h2>Available Exercises</h2>
+      <div id="exercise-list-container">
+        <ul id="exercise-list"></ul>
+      </div>
+    </section>
+  </aside>
+
+  <main>
+    <section style="display: flex; flex-direction: column; height: 100%;">
+      <h2>Workout Plan</h2>
+      <div id="plan-section-container">
+        <!-- Day blocks will be inserted here by JavaScript -->
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="all_exercises_data.js"></script>
+<script>
+/* ────── Data ─────────────────────────────────────────────────── */
+// allExercises is available from all_exercises_data.js
+
+// Initial workout plan
+let workoutPlan = {
+  'Day 1': ["iso_6", "barbell_squat", "kettlebell_swing"], 
+  'Day 2': [],
+  'Day 3': [],
+  'Day 4': []
+};
+
+/* ────── Helpers ──────────────────────────────────────────────── */
+const byId = id => allExercises.find(e => e.id === id);
+
+/* ────── Category Colors ─────────────────────────────────────── */
+const categoryColorMap = {
+    "Lower Body Strength": "#FFCDD2", 
+    "Full Body Strength": "#F8BBD0",  
+    "Upper Body Strength": "#E1BEE7", 
+    "Hip Hinge Power": "#D1C4E9",     
+    "Full Body Power": "#C5CAE9",     
+    "Plyometrics": "#BBDEFB",         
+    "Upper Body Static Hold": "#B3E5FC", 
+    "Core Static Hold": "#B2EBF2",       
+    "Grip Static Hold": "#B2DFDB",       
+    "Support Static Hold": "#C8E6C9",    
+    "Carries Static Hold": "#DCEDC8",    
+    "Lower Body Static Hold": "#F0F4C3", 
+    "Neck Static Hold": "#FFF9C4",       
+    "Postural Static Hold": "#FFECB3",   
+    "Endurance Running": "#FFE0B2",      
+    "Sprint Training": "#FFCCBC",        
+    "Default": "#CFD8DC" 
+};
+
+function getCategoryColor(category) {
+  return categoryColorMap[category] || categoryColorMap["Default"];
+}
+
+/* ────── Render sidebar ───────────────────────────────────────── */
+const exListUl = document.getElementById('exercise-list');
+const exercisesByGoalAndCategory = {};
+
+allExercises.forEach(ex => {
+  const goals = Array.isArray(ex.goal) ? ex.goal : [ex.goal]; // Handle string or array for goal
+  goals.forEach(g => {
+    if (!g) return; // Skip if goal is undefined or null
+    if (!exercisesByGoalAndCategory[g]) {
+      exercisesByGoalAndCategory[g] = {};
+    }
+    if (!exercisesByGoalAndCategory[g][ex.category]) {
+      exercisesByGoalAndCategory[g][ex.category] = [];
+    }
+    exercisesByGoalAndCategory[g][ex.category].push(ex);
+  });
+});
+
+Object.keys(exercisesByGoalAndCategory).sort().forEach(goal => { // Sort goals alphabetically
+  const goalHeading = document.createElement('div');
+  goalHeading.className = 'goal-heading';
+  goalHeading.textContent = goal;
+  exListUl.appendChild(goalHeading);
+
+  Object.keys(exercisesByGoalAndCategory[goal]).sort().forEach(category => { // Sort categories alphabetically
+    const categoryExercises = exercisesByGoalAndCategory[goal][category];
+    const categoryHeading = document.createElement('div');
+    categoryHeading.className = 'category-heading';
+    categoryHeading.textContent = category;
+    categoryHeading.style.backgroundColor = getCategoryColor(category);
+    exListUl.appendChild(categoryHeading);
+    
+    categoryExercises.sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => {
+      const li = document.createElement('li');
+      li.className = 'exercise-item';
+      li.dataset.id = ex.id;
+      li.dataset.category = ex.category;
+      li.textContent = ex.name;
+      li.title = `${ex.category} • ${ex.equipment || 'N/A'}`;
+      li.draggable = true;
+      li.style.backgroundColor = getCategoryColor(ex.category);
+      exListUl.appendChild(li);
+    });
+  });
+});
+
+/* ────── Generate workout summary ────────────────────────────── */
+function generateWorkoutSummary(exerciseIds) {
+  const dayExercises = exerciseIds.map(id => byId(id)).filter(ex => ex);
+  if (!dayExercises.length) return document.createElement('div');
+
+  const categoriesInDay = [...new Set(dayExercises.map(ex => ex.category))];
+  
+  const summary = document.createElement('div');
+  summary.className = 'workout-summary';
+  
+  const categoryHTML = categoriesInDay.map(cat => 
+    `<span class="category-tag" style="background-color:${getCategoryColor(cat)}; border-color: ${getCategoryColor(cat)};">${cat}</span>`
+  ).join('');
+  
+  summary.innerHTML = categoryHTML;
+  return summary;
+}
+
+/* ────── Render workout plan ─────────────────────────────────── */
+const planSectionContainer = document.getElementById('plan-section-container');
+
+function renderDayBlocks() {
+    planSectionContainer.innerHTML = '';
+    Object.entries(workoutPlan).forEach(([day, ids]) => {
+        const block = document.createElement('div');
+        block.className = 'day-block';
+
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'day-header';
+        const heading = document.createElement('h3');
+        heading.textContent = day;
+        dayHeader.appendChild(heading);
+        dayHeader.appendChild(generateWorkoutSummary(ids));
+        block.appendChild(dayHeader);
+
+        const ul = document.createElement('ul');
+        ul.classList.add('dropzone');
+        ul.dataset.day = day;
+
+        ids.forEach(id => {
+            const ex = byId(id);
+            if (ex) {
+                const li = document.createElement('li');
+                li.textContent = ex.name;
+                li.dataset.id = id;
+                li.dataset.category = ex.category;
+                li.style.backgroundColor = getCategoryColor(ex.category);
+                li.draggable = true;
+                ul.appendChild(li);
+            }
+        });
+        block.appendChild(ul);
+        planSectionContainer.appendChild(block);
+    });
+    addDropzoneEventListeners();
+}
+
+/* ────── Drag & drop logic ───────────────────────────────────── */
+document.addEventListener('dragstart', e => {
+  if (e.target.classList.contains('exercise-item') || (e.target.tagName === 'LI' && e.target.parentElement.classList.contains('dropzone'))) {
+    e.dataTransfer.setData('text/plain', e.target.dataset.id);
+    e.dataTransfer.setData('source-type', e.target.closest('#exercise-list-container') ? 'sidebar' : 'plan');
+    if (e.target.closest('.dropzone')) {
+        e.dataTransfer.setData('source-day', e.target.closest('.dropzone').dataset.day);
+    }
+  }
+});
+
+document.body.addEventListener('dragover', e => {
+  const fromPlan = e.dataTransfer.types.includes('source-day');
+  if (fromPlan && !e.target.closest('.dropzone') && !e.target.closest('#exercise-list-container')) {
+    e.preventDefault(); 
+  }
+});
+
+document.body.addEventListener('drop', e => {
+  const isFromPlan = e.dataTransfer.getData('source-type') === 'plan';
+  const sourceDay = e.dataTransfer.getData('source-day');
+  const exerciseId = e.dataTransfer.getData('text/plain');
+
+  if (isFromPlan && sourceDay && exerciseId && !e.target.closest('.dropzone') && !e.target.closest('#exercise-list-container')) {
+    e.preventDefault();
+    const index = workoutPlan[sourceDay].indexOf(exerciseId);
+    if (index > -1) {
+      workoutPlan[sourceDay].splice(index, 1);
+    }
+    renderDayBlocks();
+  }
+});
+
+function addDropzoneEventListeners() {
+    document.querySelectorAll('.dropzone').forEach(zone => {
+      zone.addEventListener('dragover', e => e.preventDefault());
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text/plain');
+        if (!id) return;
+        
+        const ex = byId(id);
+        if (!ex) return;
+        
+        const targetDay = zone.dataset.day;
+        const sourceType = e.dataTransfer.getData('source-type');
+        const originDay = e.dataTransfer.getData('source-day');
+
+        if (sourceType === 'plan' && originDay && originDay !== targetDay) {
+          const indexInOrigin = workoutPlan[originDay].indexOf(id);
+          if (indexInOrigin > -1) workoutPlan[originDay].splice(indexInOrigin, 1);
+        }
+        
+        if (!workoutPlan[targetDay].includes(id)) {
+          workoutPlan[targetDay].push(id);
+        }
+        renderDayBlocks();
+      });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', renderDayBlocks);
+</script>
+</body>
+</html>
