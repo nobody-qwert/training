@@ -23,6 +23,22 @@
   .plan-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
   .plan-controls label { margin-right: 0.5rem; font-weight: 500; }
   .plan-controls select { padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid #ccc; font-size: 0.9rem; }
+
+  /* General Action Button Style (e.g., Add New Day) */
+  .action-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .action-btn:hover {
+    background-color: #e0e0e0;
+  }
   
   .goal-heading { font-size: 1.1rem; font-weight: bold; color: #333; margin-top: 1.25rem; margin-bottom: 0.5rem; padding-left: 0.25rem; }
   .goal-heading:first-child { margin-top: 0; }
@@ -34,12 +50,59 @@
   .day-block{margin-bottom:1.5rem; padding: 0.75rem; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #f9f9f9;}
   .day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
   .day-header h3{margin-right:1rem; font-size: 1.15rem;}
-  .add-session-btn { cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 16px; line-height: 24px; text-align: center; }
+
+  /* Day Action Buttons (Add Session, Remove Day in day header) */
+  .day-action-btn {
+    cursor: pointer;
+    background: transparent;
+    color: #666; /* Slightly lighter text */
+    border: 1px solid #ddd; /* Lighter border */
+    border-radius: 50%;
+    width: 20px; 
+    height: 20px;
+    font-size: 12px; 
+    line-height: 20px; /* Match height for centering */
+    text-align: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: normal; /* Less bold */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .day-action-btn:hover {
+    background-color: #f0f0f0; /* Lighter hover */
+    color: #333;
+  }
+  .add-session-btn { 
+    /* Styles are now primarily from .day-action-btn */
+    /* Specific overrides for add-session-btn can go here if .day-action-btn isn't enough */
+  }
   
   .session-block{ margin-bottom:1rem; padding:0.5rem; border:1px solid #eee; border-radius:4px; background-color: #fff;}
   .session-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; padding: 0.25rem; background-color: #f0f0f0; border-radius: 3px;}
   .session-name{ font-weight:bold; font-size:0.95rem; }
-  .remove-session-btn { cursor: pointer; background: #f44336; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; line-height: 20px; text-align: center;}
+  /* Remove Session Button (in session header) */
+  .remove-session-btn {
+    cursor: pointer;
+    background: transparent;
+    color: #777;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 20px; /* Kept slightly smaller for session context */
+    height: 20px;
+    font-size: 12px;
+    line-height: 16px; /* Adjusted for better centering */
+    text-align: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: bold;
+    display: flex; /* For centering content */
+    align-items: center; /* For centering content */
+    justify-content: center; /* For centering content */
+  }
+  .remove-session-btn:hover {
+    background-color: #f0f0f0;
+    color: #d32f2f; /* Subtle danger hint on hover */
+  }
   
   .session-exercises-list { list-style:none; min-height:30px; padding:.25rem .5rem; border:1px dashed #ccc; border-radius:4px; }
   .session-exercises-list li { margin:.3rem 0; padding:.35rem .75rem; padding-left:1rem; position:relative; border-radius:4px; cursor:grab; user-select:none; font-size: 0.85rem; }
@@ -48,6 +111,16 @@
 
   .workout-summary{ font-size:0.8rem; color:#666; margin-top:0.5rem; padding-left:0.25rem; display:flex; flex-wrap:wrap; align-items:center; gap: 0.3rem; }
   .category-tag{ display:inline-block; padding:0.15rem 0.4rem; border-radius:4px; font-size:0.7rem; border: 1px solid rgba(0,0,0,0.1); }
+
+  .inline-edit-input {
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    border: 1px solid #777; /* More visible border for editing */
+    padding: 2px 4px;
+    box-sizing: border-box;
+    border-radius: 3px;
+  }
 
   /* Navigation bar */
   .nav-bar { background: #fff; padding: 0.75rem 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
@@ -98,6 +171,9 @@
       <h2>Workout Plan</h2>
       <div id="plan-section-container">
         <!-- Day blocks and sessions will be inserted here by JavaScript -->
+      </div>
+      <div id="add-day-action-container" style="text-align: center; margin-top: 1rem; padding-bottom: 1rem;">
+        <button id="add-day-btn" class="action-btn">Add New Day</button>
       </div>
     </section>
   </main>
@@ -193,13 +269,35 @@ function renderDayBlocks() {
         dayHeader.className = 'day-header';
         const dayHeading = document.createElement('h3');
         dayHeading.textContent = dayKey;
+        dayHeading.title = "Click to edit day name";
+        dayHeading.style.cursor = 'pointer';
+        dayHeading.onclick = (e) => {
+            e.stopPropagation();
+            editDayName(dayKey, dayHeading);
+        };
         const addSessBtn = document.createElement('button');
         addSessBtn.className = 'add-session-btn';
         addSessBtn.textContent = '+';
         addSessBtn.title = 'Add new session to this day';
         addSessBtn.onclick = () => addSessionToDay(dayKey);
+        addSessBtn.classList.add('day-action-btn'); // For styling
+
+        const removeDayBtn = document.createElement('button');
+        removeDayBtn.className = 'remove-day-btn day-action-btn';
+        removeDayBtn.textContent = '✕';
+        removeDayBtn.title = 'Remove this day';
+        removeDayBtn.onclick = () => removeDay(dayKey);
+
+        const dayControls = document.createElement('div');
+        dayControls.style.display = 'flex';
+        dayControls.style.alignItems = 'center';
+        dayControls.style.gap = '0.5rem';
+        
+        dayControls.appendChild(removeDayBtn);
+        dayControls.appendChild(addSessBtn);
+        
         dayHeader.appendChild(dayHeading);
-        dayHeader.appendChild(addSessBtn);
+        dayHeader.appendChild(dayControls);
         dayBlock.appendChild(dayHeader);
 
         (sessions || []).forEach(session => { // Add guard for sessions
@@ -212,6 +310,12 @@ function renderDayBlocks() {
             const sessionNameEl = document.createElement('span');
             sessionNameEl.className = 'session-name';
             sessionNameEl.textContent = session.sessionName;
+            sessionNameEl.title = "Click to edit session name";
+            sessionNameEl.style.cursor = 'pointer';
+            sessionNameEl.onclick = (e) => { 
+                e.stopPropagation(); // Prevent other clicks if this element is nested
+                editSessionName(dayKey, session.sessionId, sessionNameEl); 
+            };
             
             const removeSessBtn = document.createElement('button');
             removeSessBtn.className = 'remove-session-btn';
@@ -232,11 +336,35 @@ function renderDayBlocks() {
                 const ex = byId(exId);
                 if (ex) {
                     const li = document.createElement('li');
-                    li.textContent = ex.name;
                     li.dataset.id = ex.id;
                     li.dataset.category = ex.category;
                     li.style.backgroundColor = getCategoryColor(ex.category);
                     li.draggable = true;
+
+                    // Exercise name span
+                    const exNameSpan = document.createElement('span');
+                    exNameSpan.textContent = ex.name;
+
+                    // Subtle remove (x) button
+                    const removeExBtn = document.createElement('button');
+                    removeExBtn.className = 'remove-exercise-btn';
+                    removeExBtn.textContent = '×';
+                    removeExBtn.title = 'Remove this exercise from session';
+                    removeExBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        // Remove this exercise from the session's exercises array
+                        const idx = session.exercises.indexOf(ex.id);
+                        if (idx > -1) {
+                            session.exercises.splice(idx, 1);
+                            renderDayBlocks();
+                        }
+                    };
+
+                    // Style: match other x buttons, but subtle
+                    removeExBtn.style.marginLeft = '0.5rem';
+
+                    li.appendChild(exNameSpan);
+                    li.appendChild(removeExBtn);
                     ul.appendChild(li);
                 }
             });
@@ -260,6 +388,149 @@ function addSessionToDay(dayKey) {
         exercises: []
     });
     renderDayBlocks();
+}
+
+function editSessionName(dayKey, sessionId, nameElement) {
+    // Prevent re-triggering if already in edit mode
+    if (nameElement.firstChild && nameElement.firstChild.nodeName === 'INPUT') {
+        return;
+    }
+
+    const currentName = nameElement.textContent;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentName;
+    input.className = 'inline-edit-input'; 
+    
+    // Simple width setting, can be refined with CSS if needed
+    input.style.minWidth = '100px'; 
+    // Try to match the original element's width if it's reasonable
+    if (nameElement.offsetWidth > 50) {
+        input.style.width = nameElement.offsetWidth + 'px';
+    } else {
+        input.style.width = '150px'; // Default width if original is too small
+    }
+
+    nameElement.replaceChildren(input); // Replace content with input
+    input.focus();
+    input.select();
+
+    const saveName = () => {
+        const newName = input.value.trim();
+        if (newName && newName !== currentName) {
+            const day = workoutPlan[dayKey];
+            if (day) {
+                const session = day.find(s => s.sessionId === sessionId);
+                if (session) {
+                    session.sessionName = newName;
+                }
+            }
+        }
+        renderDayBlocks(); 
+    };
+
+    let blurTimeout;
+    input.addEventListener('blur', () => {
+        clearTimeout(blurTimeout); 
+        blurTimeout = setTimeout(saveName, 100); // Reduced delay slightly
+    });
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            clearTimeout(blurTimeout); 
+            saveName();
+        } else if (e.key === 'Escape') {
+            clearTimeout(blurTimeout); 
+            input.value = currentName; 
+            saveName(); 
+        }
+    });
+}
+
+function editDayName(currentDayKey, nameElement) {
+    // Prevent re-triggering if already in edit mode
+    if (nameElement.firstChild && nameElement.firstChild.nodeName === 'INPUT') {
+        return;
+    }
+    const currentName = nameElement.textContent;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentName;
+    input.className = 'inline-edit-input';
+    if (nameElement.offsetWidth > 50) {
+        input.style.width = nameElement.offsetWidth + 'px';
+    } else {
+        input.style.width = '150px'; // Default width
+    }
+
+    nameElement.replaceChildren(input);
+    input.focus();
+    input.select();
+
+    const saveDayName = () => {
+        const newProposedName = input.value.trim();
+        // currentDayKey is the original key of the day being edited.
+        // currentName is textContent of h3, should be same as currentDayKey at start of edit.
+
+        if (!newProposedName) { // Empty name, revert to original
+            renderDayBlocks(); // This will use currentDayKey from workoutPlan
+            return;
+        }
+
+        if (newProposedName === currentDayKey) { // No change, or changed then reverted to original exact key
+            renderDayBlocks(); // Just redraw to remove input
+            return;
+        }
+
+        // Check if newProposedName (case-insensitively) clashes with any *other* existing day key
+        let clashFound = false;
+        const newProposedNameLower = newProposedName.toLowerCase();
+        for (const existingKey in workoutPlan) {
+            if (
+                existingKey.trim().toLowerCase() === newProposedNameLower &&
+                existingKey !== currentDayKey
+            ) {
+                clashFound = true;
+                break;
+            }
+        }
+
+        if (clashFound) {
+            alert(`Day name "${newProposedName}" (or a similar name) is already in use by another day. Please choose a different name.`);
+            // workoutPlan remains unchanged. renderDayBlocks will restore currentDayKey for the edited day.
+        } else {
+            // No clash with *other* days. Proceed to update the key.
+            // Note: newProposedName might differ from currentDayKey only by case, e.g. "Day 1" to "day 1".
+            // This is a valid rename if "day 1" doesn't clash with another day.
+            const updatedWorkoutPlan = {};
+            Object.keys(workoutPlan).forEach(key => { // Iterate to maintain order as much as possible
+                if (key === currentDayKey) {
+                    updatedWorkoutPlan[newProposedName] = workoutPlan[currentDayKey]; // Use newProposedName as the key
+                } else {
+                    updatedWorkoutPlan[key] = workoutPlan[key];
+                }
+            });
+            workoutPlan = updatedWorkoutPlan;
+        }
+        renderDayBlocks(); 
+    };
+
+    let blurTimeout;
+    input.addEventListener('blur', () => {
+        clearTimeout(blurTimeout);
+        blurTimeout = setTimeout(saveDayName, 100);
+    });
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            clearTimeout(blurTimeout);
+            saveDayName();
+        } else if (e.key === 'Escape') {
+            clearTimeout(blurTimeout);
+            input.value = currentName; // Revert visual
+            // No need to change workoutPlan, saveDayName will handle re-render
+            saveDayName(); 
+        }
+    });
 }
 
 function removeSessionFromDay(dayKey, sessionId) {
@@ -318,8 +589,48 @@ function loadPredefinedPlan(planName) {
                     console.warn(`Could not map day key: "${planDayKey}" to a valid day in the plan structure. Target attempted: "${targetDayKey}"`);
                 }
             });
-    workoutPlan = newPlanStructure;
+    
+    const finalPlan = {};
+    Object.keys(newPlanStructure).sort((a, b) => parseInt(a.split(' ')[1]) - parseInt(b.split(' ')[1])).forEach(dayKey => {
+        if (newPlanStructure[dayKey] && newPlanStructure[dayKey].length > 0) {
+            finalPlan[dayKey] = newPlanStructure[dayKey];
+        }
+    });
+
+    if (Object.keys(finalPlan).length === 0) {
+        finalPlan['Day 1'] = [{ sessionId: generateSessionId(), sessionName: 'Session 1', exercises: [] }];
+    }
+    workoutPlan = finalPlan;
     renderDayBlocks();
+}
+
+function addDay() {
+    const dayKeys = Object.keys(workoutPlan);
+    let newDayNumber = 1;
+    if (dayKeys.length > 0) {
+        const dayNumbers = dayKeys.map(key => parseInt(key.replace('Day ', ''))).filter(num => !isNaN(num));
+        if (dayNumbers.length > 0) {
+            newDayNumber = Math.max(...dayNumbers) + 1;
+        } else {
+            newDayNumber = dayKeys.length + 1; // Fallback if no "Day X" keys exist
+        }
+    }
+    const newDayKey = `Day ${newDayNumber}`;
+    workoutPlan[newDayKey] = [{ sessionId: generateSessionId(), sessionName: 'Session 1', exercises: [] }];
+    renderDayBlocks();
+}
+
+function removeDay(dayKey) {
+    if (Object.keys(workoutPlan).length <= 1) {
+        alert("The plan must have at least one day.");
+        return;
+    }
+    if (confirm(`Are you sure you want to remove ${dayKey}? This action cannot be undone.`)) {
+        delete workoutPlan[dayKey];
+        // Consider re-numbering days if strict "Day 1, Day 2..." sequence is important
+        // For now, removing the key is sufficient.
+        renderDayBlocks();
+    }
 }
 
 
@@ -430,6 +741,14 @@ document.addEventListener('DOMContentLoaded', () => {
             loadPredefinedPlan(e.target.value);
         }
     });
+
+    const addDayButton = document.getElementById('add-day-btn');
+    if (addDayButton) {
+        addDayButton.addEventListener('click', addDay);
+    } else {
+        console.error("Add Day button not found");
+    }
+
     renderDayBlocks(); 
 });
 </script>
