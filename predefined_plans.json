@@ -1,0 +1,56 @@
+[
+  {
+    "name": "3-Day Beginner Strength",
+    "description": "A 3-day per week plan focusing on fundamental strength movements.",
+    "days": {
+      "Day 1": [
+        {
+          "sessionName": "Full Body A (Mon)",
+          "exercises": ["barbell_squat", "military_press", "iso_8"]
+        }
+      ],
+      "Day 2": [
+        {
+          "sessionName": "Full Body B (Wed)",
+          "exercises": ["deadlift", "kettlebell_swing", "iso_6"]
+        }
+      ],
+      "Day 3": [
+        {
+          "sessionName": "Full Body C (Fri)",
+          "exercises": ["barbell_squat", "iso_11", "sprints_interval"]
+        }
+      ]
+    }
+  },
+  {
+    "name": "7-Day Active Routine",
+    "description": "A 7-day plan incorporating daily activity, skill work, and recovery.",
+    "days": {
+      "Day 1": [ 
+        { "sessionName": "Strength AM (Mon)", "exercises": ["barbell_squat", "military_press"] },
+        { "sessionName": "Skill PM (Mon)", "exercises": ["iso_1"] }
+      ],
+      "Day 2": [
+        { "sessionName": "Cardio (Tue)", "exercises": ["running_steady_state"] }
+      ],
+      "Day 3": [
+        { "sessionName": "Strength AM (Wed)", "exercises": ["deadlift", "kb_snatch"] },
+        { "sessionName": "Tendon/Rehab PM (Wed)", "exercises": ["iso_6", "iso_20"] }
+      ],
+      "Day 4": [
+        { "sessionName": "Active Recovery (Thu)", "exercises": ["iso_8", "iso_26"] }
+      ],
+      "Day 5": [
+        { "sessionName": "Power AM (Fri)", "exercises": ["box_jump", "kettlebell_swing"] },
+        { "sessionName": "Skill PM (Fri)", "exercises": ["iso_3"] }
+      ],
+      "Day 6": [
+        { "sessionName": "Long Activity (Sat)", "exercises": ["running_steady_state"] }
+      ],
+      "Day 7": [
+        { "sessionName": "Rest/Light Mobility (Sun)", "exercises": [] }
+      ]
+    }
+  }
+]
