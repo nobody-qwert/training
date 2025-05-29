@@ -182,15 +182,7 @@
 // allExercises is available from all_exercises_data.js
 // predefinedPlansData is available from predefined_plans_data.js
 
-let workoutPlan = { // Default structure with days, each day having an array of sessions
-  'Day 1': [{ sessionId: `sess_${Date.now()}_1`, sessionName: 'Session 1', exercises: [] }],
-  'Day 2': [{ sessionId: `sess_${Date.now()}_2`, sessionName: 'Session 1', exercises: [] }],
-  'Day 3': [{ sessionId: `sess_${Date.now()}_3`, sessionName: 'Session 1', exercises: [] }],
-  'Day 4': [{ sessionId: `sess_${Date.now()}_4`, sessionName: 'Session 1', exercises: [] }],
-  'Day 5': [{ sessionId: `sess_${Date.now()}_5`, sessionName: 'Session 1', exercises: [] }],
-  'Day 6': [{ sessionId: `sess_${Date.now()}_6`, sessionName: 'Session 1', exercises: [] }],
-  'Day 7': [{ sessionId: `sess_${Date.now()}_7`, sessionName: 'Session 1', exercises: [] }]
-};
+let workoutPlan = {};
 // predefinedPlansData will be populated by the included predefined_plans_data.js file
 
 /* ────── Helpers ──────────────────────────────────────────────── */
@@ -866,7 +858,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // The Add New Day button is now created dynamically in renderDayBlocks()
 
-    renderDayBlocks(); 
+    // Load "3-Day Beginner Strength" by default if it exists
+    const defaultPlanName = "3-Day Beginner Strength";
+    const defaultPlanExists = Array.from(predefinedPlanSelect.options).some(opt => opt.value === defaultPlanName);
+    if (defaultPlanExists) {
+        predefinedPlanSelect.value = defaultPlanName;
+        loadPredefinedPlan(defaultPlanName);
+    } else {
+        renderDayBlocks();
+    }
 });
 </script>
 </body>

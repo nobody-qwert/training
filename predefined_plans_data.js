@@ -52,5 +52,32 @@ const predefinedPlansData = [
         { "sessionName": "Rest/Light Mobility", "exercises": [] }
       ]
     }
+  },
+  {
+    "name": "Empty Weekly Plan Template",
+    "description": "A blank 7-day template with one session per day.",
+    "days": {
+      "Day 1": [
+        { "sessionName": "Session 1", "exercises": [] }
+      ],
+      "Day 2": [
+        { "sessionName": "Session 1", "exercises": [] }
+      ],
+      "Day 3": [
+        { "sessionName": "Session 1", "exercises": [] }
+      ],
+      "Day 4": [
+        { "sessionName": "Session 1", "exercises": [] }
+      ],
+      "Day 5": [
+        { "sessionName": "Session 1", "exercises": [] }
+      ],
+      "Day 6": [
+        { "sessionName": "Session 1", "exercises": [] }
+      ],
+      "Day 7": [
+        { "sessionName": "Session 1", "exercises": [] }
+      ]
+    }
   }
 ];
