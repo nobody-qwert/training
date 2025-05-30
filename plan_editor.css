@@ -1,0 +1,134 @@
+/* ─── Base reset ─────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f5f5f5;color:#333;line-height:1.5}
+
+/* ─── Layout ─────────────────────────────────────────────────── */
+.wrapper{display:flex;gap:1rem;max-width:1100px;margin:1rem auto;padding:0 1rem; min-height: calc(100vh - 8rem)}
+aside,main{background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column}
+aside{flex:0 0 35%;padding:1rem; max-height: calc(100vh - 8rem); } 
+main{flex:1;padding:1rem; max-height: calc(100vh - 8rem); } 
+
+#exercise-list-container, #plan-section-container { overflow-y:auto; flex-grow: 1; padding-right:0.5rem;}
+#exercise-list{list-style:none; padding-left: 0;}
+
+/* ─── Headings & Controls ────────────────────────────────────── */
+section h2{font-size:1.25rem;margin-bottom:.75rem;border-bottom:2px solid #eaeaea;padding-bottom:.5rem}
+.plan-controls { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 1rem; }
+.plan-controls label { margin-right: 0.5rem; font-weight: 500; }
+.plan-controls select { padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid #ccc; font-size: 0.9rem; }
+
+/* General Action Button Style (e.g., Add New Day) */
+.action-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.action-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.goal-heading { font-size: 1.1rem; font-weight: bold; color: #333; margin-top: 1.25rem; margin-bottom: 0.5rem; padding-left: 0.25rem; }
+.goal-heading:first-child { margin-top: 0; }
+.category-heading{ font-weight:bold; padding:.4rem .6rem; margin-top:0.8rem; margin-bottom:.3rem; border-radius:6px; font-size:0.9rem; margin-left: 0.5rem; }
+.exercise-item{ margin:.3rem 0 .3rem 1.5rem; padding:.35rem .75rem; border-radius:6px; cursor:grab; user-select:none; transition:transform .1s ease,box-shadow .1s ease; font-size: 0.85rem; }
+.exercise-item:active{transform:scale(.97);box-shadow:0 0 4px rgba(0,0,0,.15)}
+
+/* Day, Session, and Item Styling */
+.day-block{margin-bottom:1.5rem; padding: 0.75rem; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #f9f9f9;}
+.day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
+.day-header h3{margin-right:1rem; font-size: 1.15rem;}
+
+/* Day Action Buttons (Add Session, Remove Day in day header) */
+.day-action-btn {
+  cursor: pointer;
+  background: transparent;
+  color: #666; /* Slightly lighter text */
+  border: 1px solid #ddd; /* Lighter border */
+  border-radius: 50%;
+  width: 20px; 
+  height: 20px;
+  font-size: 12px; 
+  line-height: 20px; /* Match height for centering */
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-weight: normal; /* Less bold */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.day-action-btn:hover {
+  background-color: #f0f0f0; /* Lighter hover */
+  color: #333;
+}
+.add-session-btn { 
+  /* Styles are now primarily from .day-action-btn */
+  /* Specific overrides for add-session-btn can go here if .day-action-btn isn't enough */
+}
+
+.session-block{ margin-bottom:1rem; padding:0.5rem; border:1px solid #eee; border-radius:4px; background-color: #fff;}
+.session-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; padding: 0.25rem; background-color: #f0f0f0; border-radius: 3px;}
+.session-name{ font-weight:bold; font-size:0.95rem; }
+/* Remove Session Button (in session header) */
+.remove-session-btn {
+  cursor: pointer;
+  background: transparent;
+  color: #777;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 20px; /* Kept slightly smaller for session context */
+  height: 20px;
+  font-size: 12px;
+  line-height: 16px; /* Adjusted for better centering */
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-weight: bold;
+  display: flex; /* For centering content */
+  align-items: center; /* For centering content */
+  justify-content: center; /* For centering content */
+}
+.remove-session-btn:hover {
+  background-color: #f0f0f0;
+  color: #d32f2f; /* Subtle danger hint on hover */
+}
+
+.session-exercises-list { list-style:none; min-height:30px; padding:.25rem .5rem; border:1px dashed #ccc; border-radius:4px; }
+.session-exercises-list li { margin:.3rem 0; padding:.35rem .75rem; padding-left:1rem; position:relative; border-radius:4px; cursor:grab; user-select:none; font-size: 0.85rem; }
+.session-exercises-list li::before{content:'•';left:0.25rem;position:absolute;color:#007BFF}
+.session-exercises-list li:active{transform:scale(.97);box-shadow:0 0 4px rgba(0,0,0,.15)}
+
+.workout-summary{ font-size:0.8rem; color:#666; margin-top:0.5rem; padding-left:0.25rem; display:flex; flex-wrap:wrap; align-items:center; gap: 0.3rem; }
+.category-tag{ display:inline-block; padding:0.15rem 0.4rem; border-radius:4px; font-size:0.7rem; border: 1px solid rgba(0,0,0,0.1); }
+
+.inline-edit-input {
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  border: 1px solid #777; /* More visible border for editing */
+  padding: 2px 4px;
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+
+/* Navigation bar */
+.nav-bar { background: #fff; padding: 0.75rem 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+.nav-logo { font-weight: 700; font-size: 1.2rem; color: #1a202c; text-decoration: none; }
+.nav-links { display: flex; gap: 1rem; }
+.nav-link { color: #4a5568; text-decoration: none; font-weight: 500; transition: color 0.2s ease; padding: 0.5rem 0.75rem; border-radius: 6px; }
+.nav-link:hover { color: #667eea; background: rgba(102, 126, 234, 0.1); }
+.nav-link.active { color: #667eea; font-weight: 600; }
+
+@media (max-width: 768px) {
+  .nav-bar { flex-direction: column; gap: 0.5rem; padding: 0.75rem; position: static; }
+  .wrapper { flex-direction: column; height: auto; min-height: 0; }
+  aside, main { flex-basis: auto; max-height: none; }
+  #exercise-list-container, #plan-section-container { max-height: 45vh; }
+  .nav-links { width: 100%; justify-content: center; }
+  .plan-controls { flex-direction: column; gap: 0.5rem; align-items: stretch; }
+  .plan-controls select { width: 100%; }
+}
