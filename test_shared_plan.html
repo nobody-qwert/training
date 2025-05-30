@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Shared Plan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Shared Plan URL</h1>
+    <p>This page tests the decoding of a shared workout plan URL.</p>
+    
+    <div>
+        <label for="plan-url">Enter the shared plan URL:</label>
+        <input type="text" id="plan-url" style="width: 100%; padding: 8px; margin: 10px 0;" 
+               value="https://nobody-qwert.github.io/training/plan_editor.html?plan=N4IgIghgngBAjCAXAbVAZwKZrQSwPYB2AkgCZIibYD6cA7ACwAcAbAAy0CctArAMwBM9Khn4AzNACcQAGgpZchAHIQAthnIBlefgLwZIDAA8MEgMY5KSZCAkBXAgRwEA5lTQAXDBBJQ37iJ4gALoAvkGykLD8VujahKTklGg0DCzsXHyCVIYADoymAG76STrKappxugiyRibmliih4eDQMLwxctg6CYidyXRMbJw8AkIAXjlwohzFlWXqvVpdhHo1xmYWWFZNEa30HSXxZL1JKYPpI1lQHBAYAO6zywTzFU+rBuv1W41hu7DcB0qPT6ZzSw0yQgA1lACgAbAGyQ7PVQLEBLBRVfS1DYNZA7FqwZiAp7A04DMEZUZUfgAKwwAAsco8MS9FpV3tivmhtr8CTBaMSMaT5KChpSsqYSKYVDTmaUUa8MRzPptuT9QkA">
+    </div>
+    
+    <button id="test-btn">Test URL</button>
+    
+    <div class="result">
+        <h2>Decoded Plan:</h2>
+        <pre id="decoded-plan">Click "Test URL" to see the decoded plan</pre>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
+    <script>
+        // Function to decode the workout plan data from URL
+        function decodeWorkoutPlan(encodedData) {
+            try {
+                let jsonString;
+                
+                // Try LZString decompression first
+                if (typeof LZString !== 'undefined') {
+                    try {
+                        jsonString = LZString.decompressFromEncodedURIComponent(encodedData);
+                        console.log(`Decompressed with LZString: ${jsonString ? jsonString.length : 0} characters`);
+                        
+                        // If result is null or undefined, fall back to Base64
+                        if (!jsonString) {
+                            throw new Error('LZString decompression failed');
+                        }
+                    } catch (e) {
+                        console.log('LZString decompression failed, trying Base64');
+                        // Fallback to Base64 decoding
+                        try {
+                            jsonString = decodeURIComponent(atob(encodedData));
+                            console.log(`Decoded with Base64: ${jsonString.length} characters`);
+                        } catch (base64Error) {
+                            console.error('Base64 decoding failed:', base64Error);
+                            // Try direct URI decoding as last resort
+                            jsonString = decodeURIComponent(encodedData);
+                        }
+                    }
+                } else {
+                    // Fallback to Base64 decoding
+                    try {
+                        jsonString = decodeURIComponent(atob(encodedData));
+                    } catch (base64Error) {
+                        console.error('Base64 decoding failed:', base64Error);
+                        // Try direct URI decoding as last resort
+                        jsonString = decodeURIComponent(encodedData);
+                    }
+                }
+                
+                // Parse the JSON string back to an object
+                const decodedPlan = JSON.parse(jsonString);
+                console.log('Successfully decoded plan:', decodedPlan);
+                return decodedPlan;
+            } catch (error) {
+                console.error('Error decoding workout plan:', error);
+                return null;
+            }
+        }
+
+        document.getElementById('test-btn').addEventListener('click', function() {
+            const url = document.getElementById('plan-url').value;
+            
+            try {
+                // Extract the plan parameter from the URL
+                const urlObj = new URL(url);
+                const encodedPlan = urlObj.searchParams.get('plan');
+                
+                if (encodedPlan) {
+                    console.log('Found plan parameter:', encodedPlan);
+                    const decodedPlan = decodeWorkoutPlan(encodedPlan);
+                    
+                    if (decodedPlan) {
+                        document.getElementById('decoded-plan').textContent = JSON.stringify(decodedPlan, null, 2);
+                    } else {
+                        document.getElementById('decoded-plan').textContent = 'Failed to decode plan data';
+                    }
+                } else {
+                    document.getElementById('decoded-plan').textContent = 'No plan parameter found in URL';
+                }
+            } catch (error) {
+                console.error('Error processing URL:', error);
+                document.getElementById('decoded-plan').textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
