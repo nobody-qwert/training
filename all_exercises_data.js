@@ -310,7 +310,15 @@ const allExercises = [
 
   { id: "band_face_pull", name: "Band Face Pull", goal: ["Strength"], category: "Shoulder External Rotation", equipment: "Resistance Band", description: "Posterior‑shoulder exercise improving rotator cuff strength and scapular stability.", tendons: null, fascia: null, isIsometric: false, image: "img/band_face_pull.jpg" },
 
-  { id: "band_good_morning", name: "Band Good Morning", goal: ["Strength"], category: "Hip Hinge Strength", equipment: "Resistance Band", description: "Hip hinge pattern targeting hamstrings, glutes, and lower back using elastic resistance.", tendons: null, fascia: null, isIsometric: false, image: "img/band_good_morning.jpg" }
+  { id: "band_good_morning", name: "Band Good Morning", goal: ["Strength"], category: "Hip Hinge Strength", equipment: "Resistance Band", description: "Hip hinge pattern targeting hamstrings, glutes, and lower back using elastic resistance.", tendons: null, fascia: null, isIsometric: false, image: "img/band_good_morning.jpg" },
+
+  { id: "wrestling_live_rounds", name: "Wrestling Live Rounds", goal: ["Skill", "Conditioning"], category: "Grappling", equipment: "Mat, Partner", description: "Timed live wrestling matches focusing on takedowns, control, and escapes to build sport-specific conditioning.", tendons: null, fascia: null, isIsometric: false, image: "img/wrestling_live_rounds.jpg" },
+
+{ id: "wrestling_takedown_drills", name: "Wrestling Takedown Drills", goal: ["Skill"], category: "Grappling Drill", equipment: "Mat, Partner", description: "Repetition-based double-leg, single-leg, and sprawl drills to ingrain shooting mechanics and speed.", tendons: null, fascia: null, isIsometric: false, image: "img/wrestling_takedown_drills.jpg" },
+
+{ id: "heavy_bag_power_rounds", name: "Heavy Bag Power Rounds", goal: ["Power", "Cardio"], category: "Striking Conditioning", equipment: "Heavy Bag, Boxing Gloves", description: "2–3 minute rounds of full‑power punches (and kicks) emphasizing maximal force production and anaerobic conditioning.", tendons: null, fascia: null, isIsometric: false, image: "img/heavy_bag_power_rounds.jpg" },
+
+{ id: "heavy_bag_speed_intervals", name: "Heavy Bag Speed Intervals", goal: ["Speed", "Cardio"], category: "Striking Conditioning", equipment: "Heavy Bag, Boxing Gloves", description: "Short 15‑second burst / 15‑second rest intervals of lightning‑fast combinations to develop hand speed and metabolic efficiency.", tendons: null, fascia: null, isIsometric: false, image: "img/heavy_bag_speed_intervals.jpg" }
 
 ];
 
