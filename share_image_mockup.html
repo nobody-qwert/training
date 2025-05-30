@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Plan Image Mockup</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .image-container {
+            width: 1200px;
+            height: 630px; /* Facebook optimal size */
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .image-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px 30px;
+        }
+        
+        .image-logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .image-title {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+        
+        .image-content {
+            padding: 25px 30px;
+            display: flex;
+            height: calc(100% - 74px); /* Subtract header height */
+        }
+        
+        .plan-days {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .day-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            width: calc(33.33% - 10px);
+            box-sizing: border-box;
+        }
+        
+        .day-header {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 8px;
+        }
+        
+        .session {
+            margin-bottom: 15px;
+        }
+        
+        .session-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
+            padding: 6px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+        
+        .exercise-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        
+        .exercise-item {
+            background-color: #E1BEE7; /* Example color - would match exercise category */
+            margin: 5px 0;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            position: relative;
+            padding-left: 18px;
+        }
+        
+        .exercise-item::before {
+            content: '•';
+            position: absolute;
+            left: 7px;
+            color: #007BFF;
+        }
+        
+        .image-footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .category-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 8px;
+        }
+        
+        .category-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            border: 1px solid rgba(0,0,0,0.1);
+            background-color: #BBDEFB; /* Example color */
+        }
+        
+        /* This would be hidden in actual implementation */
+        .instructions {
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">
+        <h1>Workout Plan Social Media Image Mockup</h1>
+        <p>This is a visual mockup of how the workout plan could look when shared as an image on social media.</p>
+        <p>The actual implementation would:</p>
+        <ul>
+            <li>Generate this layout dynamically based on the current plan</li>
+            <li>Use html2canvas to convert it to an image</li>
+            <li>Allow downloading or direct sharing to social platforms</li>
+        </ul>
+        <p>The mockup below shows a sample 3-day workout plan with the styling that matches the existing application.</p>
+    </div>
+
+    <div class="image-container">
+        <div class="image-header">
+            <div class="image-logo">Training Hub</div>
+            <div class="image-title">My Custom Workout Plan</div>
+        </div>
+        
+        <div class="image-content">
+            <div class="plan-days">
+                <div class="day-card">
+                    <div class="day-header">Day 1</div>
+                    <div class="session">
+                        <div class="session-name">Strength Session</div>
+                        <ul class="exercise-list">
+                            <li class="exercise-item" style="background-color: #FFCDD2;">Barbell Squat</li>
+                            <li class="exercise-item" style="background-color: #E1BEE7;">Military Press</li>
+                            <li class="exercise-item" style="background-color: #B2DFDB;">Dead Hang</li>
+                        </ul>
+                        <div class="category-tags">
+                            <span class="category-tag" style="background-color: #FFCDD2;">Lower Body Strength</span>
+                            <span class="category-tag" style="background-color: #E1BEE7;">Upper Body Strength</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="day-card">
+                    <div class="day-header">Day 2</div>
+                    <div class="session">
+                        <div class="session-name">Power Session</div>
+                        <ul class="exercise-list">
+                            <li class="exercise-item" style="background-color: #F8BBD0;">Deadlift</li>
+                            <li class="exercise-item" style="background-color: #D1C4E9;">Kettlebell Swing</li>
+                            <li class="exercise-item" style="background-color: #C8E6C9;">L-Sit</li>
+                        </ul>
+                        <div class="category-tags">
+                            <span class="category-tag" style="background-color: #F8BBD0;">Full Body Strength</span>
+                            <span class="category-tag" style="background-color: #D1C4E9;">Hip Hinge Power</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="day-card">
+                    <div class="day-header">Day 3</div>
+                    <div class="session">
+                        <div class="session-name">Mixed Session</div>
+                        <ul class="exercise-list">
+                            <li class="exercise-item" style="background-color: #FFCDD2;">Barbell Squat</li>
+                            <li class="exercise-item" style="background-color: #B2DFDB;">Handstand Hold</li>
+                            <li class="exercise-item" style="background-color: #FFCCBC;">Interval Sprints</li>
+                        </ul>
+                        <div class="category-tags">
+                            <span class="category-tag" style="background-color: #FFCDD2;">Lower Body Strength</span>
+                            <span class="category-tag" style="background-color: #FFCCBC;">Sprint Training</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="image-footer">
+            Created with Training Hub • https://nobody-qwert.github.io/training/
+        </div>
+    </div>
+</body>
+</html>
