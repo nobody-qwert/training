@@ -274,7 +274,44 @@ const allExercises = [
     fascia: null,
     isIsometric: false,
     image: "img/sprints.jpg" // Placeholder image
-  }
+  },
+
+  // --- BODYWEIGHT (NEW) ---
+  { id: "push_up", name: "Push‑Up", goal: ["Strength"], category: "Upper Body Strength", equipment: "None", description: "Classic bodyweight pressing movement targeting the chest, shoulders, triceps, and core.", tendons: null, fascia: null, isIsometric: false, image: "img/push_up.jpg" },
+
+  { id: "pull_up", name: "Pull‑Up", goal: ["Strength"], category: "Upper Body Pull Strength", equipment: "Pull‑up Bar", description: "Vertical pulling exercise focusing on latissimus dorsi, biceps, and upper back.", tendons: null, fascia: null, isIsometric: false, image: "img/pull_up.jpg" },
+
+  { id: "chin_up", name: "Chin‑Up", goal: ["Strength"], category: "Upper Body Pull Strength", equipment: "Pull‑up Bar", description: "Supinated‑grip vertical pull emphasizing biceps and lats.", tendons: null, fascia: null, isIsometric: false, image: "img/chin_up.jpg" },
+
+  { id: "jumping_lunge", name: "Jumping Lunge", goal: ["Power", "Speed"], category: "Lower Body Plyometrics", equipment: "None", description: "Alternating lunge with an explosive jump to develop lower‑body power and coordination.", tendons: null, fascia: null, isIsometric: false, image: "img/jumping_lunge.jpg" },
+
+  { id: "air_squat", name: "Bodyweight Squat", goal: ["Strength"], category: "Lower Body Strength", equipment: "None", description: "Fundamental squat pattern targeting quadriceps, glutes, and hamstrings with no external load.", tendons: null, fascia: null, isIsometric: false, image: "img/air_squat.jpg" },
+
+  { id: "pistol_squat", name: "Pistol Squat", goal: ["Strength", "Balance"], category: "Single‑Leg Strength", equipment: "None", description: "Unilateral squat requiring strength, mobility, and balance; emphasizes quads and glutes.", tendons: null, fascia: null, isIsometric: false, image: "img/pistol_squat.jpg" },
+
+  { id: "burpee", name: "Burpee", goal: ["Cardio", "Power"], category: "Full‑Body Conditioning", equipment: "None", description: "Full‑body movement combining squat, plank, push‑up, and jump for metabolic conditioning.", tendons: null, fascia: null, isIsometric: false, image: "img/burpee.jpg" },
+
+  { id: "jump_rope", name: "Jump Rope", goal: ["Cardio", "Speed"], category: "Rhythmic Conditioning", equipment: "Jump Rope", description: "Rhythmic plyometric conditioning drill that improves coordination, foot speed, and endurance.", tendons: null, fascia: null, isIsometric: false, image: "img/jump_rope.jpg" },
+
+  // --- BARBELL (NEW) ---
+  { id: "barbell_bench_press", name: "Barbell Bench Press", goal: ["Strength"], category: "Upper Body Strength", equipment: "Barbell, Bench", description: "Horizontal pressing staple targeting pectorals, anterior deltoids, and triceps.", tendons: null, fascia: null, isIsometric: false, image: "img/barbell_bench_press.jpg" },
+
+  { id: "barbell_row", name: "Barbell Bent‑Over Row", goal: ["Strength"], category: "Upper Body Pull Strength", equipment: "Barbell", description: "Compound rowing movement building upper‑back thickness and hip‑hinge stability.", tendons: null, fascia: null, isIsometric: false, image: "img/barbell_row.jpg" },
+
+  { id: "barbell_hip_thrust", name: "Barbell Hip Thrust", goal: ["Strength"], category: "Glute Strength", equipment: "Barbell, Bench", description: "Posterior chain exercise emphasizing glute maximus strength and power.", tendons: null, fascia: null, isIsometric: false, image: "img/barbell_hip_thrust.jpg" },
+
+  // --- INDIAN CLUB (NEW) ---
+  { id: "indian_club_front_swing", name: "Indian Club Front Swing", goal: ["Mobility", "Strength"], category: "Shoulder Mobility", equipment: "Indian Clubs", description: "Rhythmic forward swing pattern improving shoulder mobility, coordination, and grip.", tendons: null, fascia: null, isIsometric: false, image: "img/indian_club_front_swing.jpg" },
+
+  { id: "indian_club_mill", name: "Indian Club Mill", goal: ["Mobility", "Strength"], category: "Shoulder Mobility", equipment: "Indian Clubs", description: "Circular milling pattern developing shoulder endurance, cross‑body coordination, and forearm strength.", tendons: null, fascia: null, isIsometric: false, image: "img/indian_club_mill.jpg" },
+
+  // --- RESISTANCE BAND (NEW) ---
+  { id: "band_pull_apart", name: "Band Pull‑Apart", goal: ["Strength"], category: "Upper Back Activation", equipment: "Resistance Band", description: "Scapular‑retraction drill strengthening rear delts and rhomboids; great for posture.", tendons: null, fascia: null, isIsometric: false, image: "img/band_pull_apart.jpg" },
+
+  { id: "band_face_pull", name: "Band Face Pull", goal: ["Strength"], category: "Shoulder External Rotation", equipment: "Resistance Band", description: "Posterior‑shoulder exercise improving rotator cuff strength and scapular stability.", tendons: null, fascia: null, isIsometric: false, image: "img/band_face_pull.jpg" },
+
+  { id: "band_good_morning", name: "Band Good Morning", goal: ["Strength"], category: "Hip Hinge Strength", equipment: "Resistance Band", description: "Hip hinge pattern targeting hamstrings, glutes, and lower back using elastic resistance.", tendons: null, fascia: null, isIsometric: false, image: "img/band_good_morning.jpg" }
+
 ];
 
 // Helper functions
