@@ -10,6 +10,32 @@ const shareFacebookBtn = document.getElementById('share-facebook');
 const shareLinkedInBtn = document.getElementById('share-linkedin');
 const shareWhatsAppBtn = document.getElementById('share-whatsapp');
 
+// Create Share as Image button
+const shareAsImageBtn = document.createElement('button');
+shareAsImageBtn.id = 'share-as-image-btn';
+shareAsImageBtn.className = 'share-as-image-btn';
+shareAsImageBtn.textContent = 'Share as Image';
+shareAsImageBtn.style.cssText = `
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #667eea;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+`;
+shareAsImageBtn.onmouseover = () => {
+    shareAsImageBtn.style.backgroundColor = '#5a6fd1';
+};
+shareAsImageBtn.onmouseout = () => {
+    shareAsImageBtn.style.backgroundColor = '#667eea';
+};
+
 // Base URL for sharing
 const baseShareUrl = 'https://nobody-qwert.github.io/training/plan_editor.html';
 
@@ -245,6 +271,33 @@ function loadLZString(callback) {
     }
 }
 
+// Function to handle share as image
+async function shareAsImage() {
+    try {
+        // Load html2canvas if not already loaded
+        await new Promise((resolve, reject) => {
+            loadHtml2Canvas(() => {
+                resolve();
+            });
+        });
+        
+        // Generate the image template
+        const template = generateWorkoutImageTemplate(workoutPlan);
+        
+        // Convert template to image
+        const imageData = await convertTemplateToImage(template);
+        
+        // Show image preview
+        showImagePreview(imageData);
+        
+        // Close the share modal
+        closeShareModal();
+    } catch (error) {
+        console.error('Error generating image:', error);
+        alert('There was an error generating the image. Please try again.');
+    }
+}
+
 // Initialize share functionality
 function initializeShareFunctionality() {
     // Event listeners for share functionality
@@ -255,6 +308,15 @@ function initializeShareFunctionality() {
     shareFacebookBtn.addEventListener('click', () => shareOnSocialMedia('facebook'));
     shareLinkedInBtn.addEventListener('click', () => shareOnSocialMedia('linkedin'));
     shareWhatsAppBtn.addEventListener('click', () => shareOnSocialMedia('whatsapp'));
+    
+    // Add Share as Image button to the modal
+    const socialShareButtons = document.querySelector('.social-share-buttons');
+    if (socialShareButtons && socialShareButtons.parentNode) {
+        socialShareButtons.parentNode.appendChild(shareAsImageBtn);
+        
+        // Add event listener for Share as Image button
+        shareAsImageBtn.addEventListener('click', shareAsImage);
+    }
 
     // Close modal when clicking outside the content
     shareModal.addEventListener('click', (e) => {
